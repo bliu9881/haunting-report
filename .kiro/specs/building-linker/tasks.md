@@ -1,0 +1,24 @@
+# Tasks: Building Linker
+
+- [x] 1. Create `packages/core` (package.json, tsconfig strict, vitest, fast-check)
+- [x] 2. Implement `identifiers.ts` (Requirements 2, 3, 4)
+  - [x] 2.1 Example tests from docs/data-sources.md
+  - [x] 2.2 Property tests: round trip, idempotence, padding equivalence, no throw on garbage
+  - [ ] 2.3 Accept PLUTO's two-letter borough codes and `STATEN IS`, and collapse inner whitespace (Requirement 3.1, 3.2). Confirm the exact values PLUTO and 311 return before implementing
+  - [ ] 2.4 Require a leading borough digit 1 to 5 in `normalizeBin`, and tighten the BIN property assertion to `/^[1-5]\d{6}$/` (Requirement 4.3)
+  - [ ] 2.5 Reject block `00000` in `normalizeBbl` and `composeBbl`, and raise the block generator's floor to 1 so the round-trip property stops asserting a fake building (Requirement 2)
+- [x] 3. Implement `geosearch.ts` with injected fetch (Requirement 1)
+  - [x] 3.1 Record `size=5` fixtures under `test/fixtures/`: buildings A and B, a bare street name, an address with no borough, a no-results response
+  - [x] 3.2 Decide the ambiguity rule from those fixtures. Outcome: confidence is a dead signal (every feature returns 0.8), so the rule reads `geocoding.query.parsed_text` instead; `LOW_CONFIDENCE` 0.6 kept only as a backstop
+  - [x] 3.3 Tests for `match`, `not_found`, `ambiguous` (both structural reasons) and `error`, plus (BBL, BIN) de-duplication
+  - [x] 3.4 Property tests for `classify`: a match is always the top candidate, never silently picks across boroughs, ambiguous keeps every candidate
+  - [x] 3.5 Bound the request (Requirement 5.2 to 5.4): `AbortSignal.any` of `AbortSignal.timeout(GEOSEARCH_TIMEOUT_MS)` and the caller signal, 5000 ms, at most one retry and only after a network error or 5xx. Tests for timeout, caller abort (5.3 already holds, needs a test) and the retry rules. Done in shared `src/http.ts` (`fetchJson`), which the Socrata client also uses
+  - [x] 3.6 Add `reason` (`timeout`, `aborted`, `network`, `http`, `malformed`) and optional `status` to the `error` variant (Requirement 5.5), so the report can tell a timeout from a 404 before seven adapters copy the shape
+  - [x] 3.7 Address checks (Requirement 1.8 to 1.11)
+    - [x] 3.7.1 Record day-2 fixtures with `scripts/record-geosearch-fixtures.mjs`: `new-york-ny`, `wrong-housenumber`, `fake-street`, `postcode`. Re-record the day-1 fixtures with `housenumber`, `street` and `postalcode` kept
+    - [x] 3.7.2 Write the fixture tests and see them fail against the day-1 rules (all four returned a confident `match`)
+    - [x] 3.7.3 House number, borough and postcode checks in `classify`; `parseQuery` refuses city names as a borough
+    - [x] 3.7.4 `street.ts` with example and property tests; street check in `classify` with reason `street_mismatch`
+    - [x] 3.7.5 Rewrite the `classify` properties for the new `ParsedQuery`: no contradiction, order kept, earlier candidates fail alone, two-borough twin is ambiguous, self-query matches
+- [x] 4. Reconcile docs/data-sources.md: record `size=5` for the linker, and the probed `borough` column format for PLUTO and 311
+- [ ] 5. Checkpoint: `npm test` and `npm run typecheck` pass from the repo root, and every acceptance criterion in requirements.md traces to a named test

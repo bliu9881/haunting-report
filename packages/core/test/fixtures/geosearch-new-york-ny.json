@@ -1,0 +1,102 @@
+{
+  "geocoding": {
+    "query": {
+      "text": "350 88th St, New York, NY",
+      "parsed_text": {
+        "subject": "350 88th St",
+        "housenumber": "350",
+        "street": "88th St",
+        "locality": "New York",
+        "region": "NY",
+        "admin": "New York, NY"
+      }
+    }
+  },
+  "features": [
+    {
+      "properties": {
+        "label": "350 88 STREET, Brooklyn, NY, USA",
+        "borough": "Brooklyn",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "350",
+        "street": "88 STREET",
+        "postalcode": "11209",
+        "addendum": {
+          "pad": {
+            "bbl": "3060620025",
+            "bin": "3154069"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "350 WEST 88 STREET, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "350",
+        "street": "WEST 88 STREET",
+        "postalcode": "10024",
+        "addendum": {
+          "pad": {
+            "bbl": "1012490054",
+            "bin": "1033993"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "350 EAST 88 STREET, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "350",
+        "street": "EAST 88 STREET",
+        "postalcode": "10128",
+        "addendum": {
+          "pad": {
+            "bbl": "1015500031",
+            "bin": "1050055"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "350 GARAGE 88 STREET, Brooklyn, NY, USA",
+        "borough": "Brooklyn",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "350 GARAGE",
+        "street": "88 STREET",
+        "postalcode": "11209",
+        "addendum": {
+          "pad": {
+            "bbl": "3060620025",
+            "bin": "3363323"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "350 BEACH 88 STREET, Rockaway Beach, NY, USA",
+        "borough": "Queens",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "350",
+        "street": "BEACH 88 STREET",
+        "postalcode": "11693",
+        "addendum": {
+          "pad": {
+            "bbl": "4161190060",
+            "bin": "4303394"
+          }
+        }
+      }
+    }
+  ]
+}

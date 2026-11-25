@@ -1,0 +1,101 @@
+{
+  "geocoding": {
+    "query": {
+      "text": "123 Fake Street Queens",
+      "parsed_text": {
+        "subject": "123 Fake Street",
+        "housenumber": "123",
+        "street": "Fake Street",
+        "locality": "Queens",
+        "admin": "Queens"
+      }
+    }
+  },
+  "features": [
+    {
+      "properties": {
+        "label": "123 ST FELIX'S STREET, Brooklyn, NY, USA",
+        "borough": "Brooklyn",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "123",
+        "street": "ST FELIX'S STREET",
+        "postalcode": "11217",
+        "addendum": {
+          "pad": {
+            "bbl": "3021120013",
+            "bin": "3059200"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "123 ST FELIX STREET, Brooklyn, NY, USA",
+        "borough": "Brooklyn",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "123",
+        "street": "ST FELIX STREET",
+        "postalcode": "11217",
+        "addendum": {
+          "pad": {
+            "bbl": "3021120013",
+            "bin": "3059200"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "123 WEST 123 STREET, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "123",
+        "street": "WEST 123 STREET",
+        "postalcode": "10027",
+        "addendum": {
+          "pad": {
+            "bbl": "1019087504",
+            "bin": "1087830"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "123 GROSVENOR STREET, Douglaston, NY, USA",
+        "borough": "Queens",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "123",
+        "street": "GROSVENOR STREET",
+        "postalcode": "11363",
+        "addendum": {
+          "pad": {
+            "bbl": "4080260034",
+            "bin": "4168106"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "123 144 STREET, Whitestone, NY, USA",
+        "borough": "Queens",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "123",
+        "street": "144 STREET",
+        "postalcode": "11357",
+        "addendum": {
+          "pad": {
+            "bbl": "4044160231",
+            "bin": "4100894"
+          }
+        }
+      }
+    }
+  ]
+}

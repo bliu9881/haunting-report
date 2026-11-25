@@ -1,0 +1,101 @@
+{
+  "geocoding": {
+    "query": {
+      "text": "1248 St Marks Avenue Brooklyn",
+      "parsed_text": {
+        "subject": "1248 St Marks Avenue",
+        "housenumber": "1248",
+        "street": "St Marks Avenue",
+        "locality": "Brooklyn",
+        "admin": "Brooklyn"
+      }
+    }
+  },
+  "features": [
+    {
+      "properties": {
+        "label": "1248 SAINT MARK'S AVENUE, Brooklyn, NY, USA",
+        "borough": "Brooklyn",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "1248",
+        "street": "SAINT MARK'S AVENUE",
+        "postalcode": "11213",
+        "addendum": {
+          "pad": {
+            "bbl": "3013610043",
+            "bin": "3036097"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "1248 ST MARKS AVENUE, Brooklyn, NY, USA",
+        "borough": "Brooklyn",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "1248",
+        "street": "ST MARKS AVENUE",
+        "postalcode": "11213",
+        "addendum": {
+          "pad": {
+            "bbl": "3013610043",
+            "bin": "3036097"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "1248 ST MARK'S AVENUE, Brooklyn, NY, USA",
+        "borough": "Brooklyn",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "1248",
+        "street": "ST MARK'S AVENUE",
+        "postalcode": "11213",
+        "addendum": {
+          "pad": {
+            "bbl": "3013610043",
+            "bin": "3036097"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "1248 SAINT MARKS AVENUE, Brooklyn, NY, USA",
+        "borough": "Brooklyn",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "1248",
+        "street": "SAINT MARKS AVENUE",
+        "postalcode": "11213",
+        "addendum": {
+          "pad": {
+            "bbl": "3013610043",
+            "bin": "3036097"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "7 ST MARK'S AVENUE, Brooklyn, NY, USA",
+        "borough": "Brooklyn",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "7",
+        "street": "ST MARK'S AVENUE",
+        "postalcode": "11217",
+        "addendum": {
+          "pad": {
+            "bbl": "3009330075",
+            "bin": "3018639"
+          }
+        }
+      }
+    }
+  ]
+}

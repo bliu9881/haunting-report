@@ -1,0 +1,102 @@
+{
+  "geocoding": {
+    "query": {
+      "text": "350 88th St, NY 10128",
+      "parsed_text": {
+        "subject": "350 88th St",
+        "housenumber": "350",
+        "street": "88th St",
+        "locality": "NY",
+        "postcode": "10128",
+        "admin": "NY"
+      }
+    }
+  },
+  "features": [
+    {
+      "properties": {
+        "label": "350 EAST 88 STREET, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "350",
+        "street": "EAST 88 STREET",
+        "postalcode": "10128",
+        "addendum": {
+          "pad": {
+            "bbl": "1015500031",
+            "bin": "1050055"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "66 EAST 88 STREET, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "66",
+        "street": "EAST 88 STREET",
+        "postalcode": "10128",
+        "addendum": {
+          "pad": {
+            "bbl": "1014990040",
+            "bin": "1046919"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "46 EAST 88 STREET, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "46",
+        "street": "EAST 88 STREET",
+        "postalcode": "10128",
+        "addendum": {
+          "pad": {
+            "bbl": "1014990051",
+            "bin": "1046921"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "50 EAST 88 STREET, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "50",
+        "street": "EAST 88 STREET",
+        "postalcode": "10128",
+        "addendum": {
+          "pad": {
+            "bbl": "1014990051",
+            "bin": "1046921"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "12 EAST 88 STREET, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "12",
+        "street": "EAST 88 STREET",
+        "postalcode": "10128",
+        "addendum": {
+          "pad": {
+            "bbl": "1014997502",
+            "bin": "1046923"
+          }
+        }
+      }
+    }
+  ]
+}

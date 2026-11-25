@@ -1,0 +1,59 @@
+:root {
+  --bg: #0f0d14;
+  --panel: #1a1622;
+  --line: #2e2838;
+  --text: #ece7f3;
+  --muted: #a69cb6;
+  --accent: #ff7a1a;
+  --danger: #ff5470;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+main { max-width: 760px; margin: 0 auto; padding: 24px 20px 48px; }
+a { color: var(--accent); }
+
+.site-header { border-bottom: 1px solid var(--line); padding: 14px 20px; }
+.brand { color: var(--text); font-weight: 700; text-decoration: none; letter-spacing: 0.02em; }
+.site-footer { color: var(--muted); font-size: 13px; text-align: center; padding: 24px 20px; border-top: 1px solid var(--line); }
+
+h1 { font-size: 28px; line-height: 1.2; margin: 8px 0 4px; }
+h2 { font-size: 18px; margin: 0 0 12px; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+
+.search { display: flex; gap: 8px; margin: 20px 0; }
+.search input {
+  flex: 1; padding: 12px 14px; font-size: 16px; color: var(--text);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+}
+.search button {
+  padding: 12px 18px; font-size: 16px; font-weight: 600; color: #160b02;
+  background: var(--accent); border: 0; border-radius: 8px; cursor: pointer;
+}
+
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; margin: 16px 0; }
+.big { font-size: 32px; font-weight: 750; line-height: 1.1; }
+.big .of { font-size: 16px; font-weight: 500; color: var(--muted); }
+
+.facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 14px 0 0; }
+.fact { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; }
+.fact b { display: block; font-size: 20px; }
+.fact span { color: var(--muted); font-size: 13px; }
+.fact.c b { color: var(--danger); }
+
+.candidates { list-style: none; padding: 0; }
+.candidates li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-weight: 500; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }

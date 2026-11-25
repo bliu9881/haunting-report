@@ -1,0 +1,19 @@
+{
+  "name": "haunting-report",
+  "private": true,
+  "description": "A haunting report for any NYC building, stitched from separate city datasets.",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @haunting/refresh && npm run build -w @haunting/web",
+    "start": "npm run start -w @haunting/web",
+    "test": "npm test --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=20.9"
+  }
+}

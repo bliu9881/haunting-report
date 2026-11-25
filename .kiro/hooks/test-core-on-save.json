@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Run core tests on save",
+      "trigger": "PostFileSave",
+      "description": "Runs the core package tests whenever a TypeScript file in packages/core is saved.",
+      "matcher": "packages/core/.*\\.ts$",
+      "action": {
+        "type": "command",
+        "command": "cd packages/core && npm test --silent 2>&1 | tail -n 25",
+        "timeout": 90
+      }
+    }
+  ]
+}

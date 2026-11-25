@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.next/
+.env
+.env.*
+!.env.example
+.DS_Store
+coverage/
+# NOTE: .kiro/ must stay committed. Kiroween judges verify Kiro usage from it.
+*.tsbuildinfo
+next-env.d.ts

@@ -1,0 +1,25 @@
+{
+  "name": "@haunting/refresh",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "description": "Nightly neighborhood-rankings refresh. Built to one file for Hostinger's cron (Node 24).",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "build": "esbuild src/main.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/refresh.cjs --log-level=warning",
+    "refresh": "node --env-file=../../.env dist/refresh.cjs",
+    "inspect": "esbuild scripts/inspect.ts --bundle --platform=node --format=esm --outfile=dist/inspect.mjs --log-level=warning --banner:js=\"import{createRequire}from'module';const require=createRequire(import.meta.url);\" && node --env-file=../../.env dist/inspect.mjs"
+  },
+  "dependencies": {
+    "@haunting/core": "*",
+    "@haunting/store": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

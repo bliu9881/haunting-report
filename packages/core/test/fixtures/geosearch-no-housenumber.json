@@ -1,0 +1,98 @@
+{
+  "geocoding": {
+    "query": {
+      "text": "Broadway",
+      "parsed_text": {
+        "subject": "Broadway",
+        "street": "Broadway"
+      }
+    }
+  },
+  "features": [
+    {
+      "properties": {
+        "label": "2575 B'WAY, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "2575",
+        "street": "B'WAY",
+        "postalcode": "10025",
+        "addendum": {
+          "pad": {
+            "bbl": "1018687501",
+            "bin": "1056068"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "2575 BROADWAY, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "2575",
+        "street": "BROADWAY",
+        "postalcode": "10025",
+        "addendum": {
+          "pad": {
+            "bbl": "1018687501",
+            "bin": "1056068"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "2563 BROADWAY, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "2563",
+        "street": "BROADWAY",
+        "postalcode": "10025",
+        "addendum": {
+          "pad": {
+            "bbl": "1018687501",
+            "bin": "1056068"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "2581 B'WAY, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "2581",
+        "street": "B'WAY",
+        "postalcode": "10025",
+        "addendum": {
+          "pad": {
+            "bbl": "1018690013",
+            "bin": "1056375"
+          }
+        }
+      }
+    },
+    {
+      "properties": {
+        "label": "2581 BROADWAY, New York, NY, USA",
+        "borough": "Manhattan",
+        "confidence": 0.8,
+        "match_type": "fallback",
+        "housenumber": "2581",
+        "street": "BROADWAY",
+        "postalcode": "10025",
+        "addendum": {
+          "pad": {
+            "bbl": "1018690013",
+            "bin": "1056375"
+          }
+        }
+      }
+    }
+  ]
+}

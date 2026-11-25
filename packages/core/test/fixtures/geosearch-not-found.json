@@ -1,0 +1,11 @@
+{
+  "geocoding": {
+    "query": {
+      "text": "zzzzqqqq xyzzy",
+      "parsed_text": {
+        "subject": "zzzzqqqq xyzzy"
+      }
+    }
+  },
+  "features": []
+}
