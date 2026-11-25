@@ -4,8 +4,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "node --env-file-if-exists=../../.env ../../node_modules/next/dist/bin/next dev",
+    "build": "next build --webpack",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "vitest run"
@@ -13,7 +13,8 @@
   "dependencies": {
     "@haunting/core": "*",
     "@haunting/store": "*",
-    "next": "^16.4.6",
+    "@next/swc-wasm-nodejs": "16.4.6",
+    "next": "16.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "server-only": "^0.0.1"

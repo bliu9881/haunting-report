@@ -11,6 +11,12 @@ Sources: Hostinger support, "How to add a Node.js web app", "Node.js limits for 
 - **Scheduled work** goes in a Hostinger cron job, not a timer inside the app.
 - **Process limit:** one Next.js app uses about 10 to 11 threads, and `domain` and `www.domain` each run a process. Don't run more processes than you need.
 
+## Build environment quirks (first deploy, 2026-11-25)
+- Hostinger's build servers have glibc older than 2.29, so Next.js's native compiler (`@next/swc-linux-x64-gnu`) can't load. Next falls back to the WebAssembly compiler, which Turbopack can't use. So `apps/web` builds with **`next build --webpack`**, and `@next/swc-wasm-nodejs` is a pinned dependency at the same version as `next` (16.4.6). **Upgrade them together**, or the build fails with mismatched bindings.
+- Reproduce locally with `NEXT_TEST_WASM=1 npm run build`; the default Turbopack build fails the same way it does on Hostinger.
+- `next.config.ts` is loaded as an ES module there: no `__dirname`, `require` or other CommonJS globals. The `dev` script loads the root `.env` with `node --env-file-if-exists`.
+- esbuild (for `apps/refresh`) is a static Go binary and is not affected.
+
 ## Build settings (monorepo)
 - Root directory: `./` (the whole workspace has to be installed so `apps/web` can use `packages/core`)
 - Package manager: npm, detected from `package-lock.json`
@@ -20,7 +26,7 @@ Sources: Hostinger support, "How to add a Node.js web app", "Node.js limits for 
 - `apps/web/next.config.ts` lists `@haunting/core` and `@haunting/store` in `transpilePackages` (they ship TypeScript source) and `mysql2` in `serverExternalPackages`.
 - On Hostinger, set `DB_HOST=127.0.0.1`, not `localhost` and not the remote hostname. With `localhost`, Node 17+ connects over IPv6 (`::1`) and gets "Access denied" (Hostinger's MySQL guide).
 - Unverified until the first deploy: how Hostinger starts a Next.js app whose root is `./` but whose app is `apps/web`. If the Next.js preset can't find the app, use the "Other" preset with `npm run build` and `npm start`.
-- Local production check: `cd apps/web && node --env-file=../../.env ../../node_modules/next/dist/bin/next start -p 3123`. `next.config.ts` loads the root `.env` only outside production.
+- Local production check: `set -a; . ./.env; set +a; NEXT_TEST_WASM=1 npm run build && PORT=3123 npm start`. That builds and runs the way Hostinger does.
 
 ## Secrets and configuration
 Set these as environment variables in the Hostinger dashboard, never in the repo:

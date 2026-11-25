@@ -1,10 +1,7 @@
-import { existsSync } from "node:fs";
-import path from "node:path";
 import type { NextConfig } from "next";
 
-// Local development reads the repo-root .env. On Hostinger the variables come from the dashboard.
-const rootEnv = path.join(__dirname, "..", "..", ".env");
-if (process.env.NODE_ENV !== "production" && existsSync(rootEnv)) process.loadEnvFile(rootEnv);
+// No __dirname or other CommonJS globals here: Hostinger loads this file as an ES module.
+// Local development reads the repo-root .env through the `dev` script (node --env-file-if-exists).
 
 const config: NextConfig = {
   // The workspace packages ship TypeScript source (deployment.md).
