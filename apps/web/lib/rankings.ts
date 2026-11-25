@@ -1,6 +1,6 @@
 import "server-only";
 import type { NeighborhoodSummary, BuildingMetric } from "@haunting/core";
-import { configFromEnv, createMariaStore, getRanking, type PublishedRanking, type RankingLookup, type RankingStore } from "@haunting/store";
+import { configFromEnv, createMariaStore, describeHost, getRanking, type PublishedRanking, type RankingLookup, type RankingStore } from "@haunting/store";
 
 // One pool per server process (Hostinger runs one long-lived process). Kept on globalThis so dev reloads reuse it.
 const g = globalThis as { __hauntingStore?: Promise<RankingStore> };
@@ -62,7 +62,7 @@ export async function lookupNeighborhood(ntaCode: string, limit = 10): Promise<N
 export type RankingsHealth =
   | { ok: true; runId: number; publishedAt: string; formulaVersion: string }
   | { ok: true; runId: null; note: "no rankings published yet" }
-  | { ok: false; error: string };
+  | { ok: false; error: string; dbHostKind: ReturnType<typeof describeHost> };
 
 export async function rankingsHealth(): Promise<RankingsHealth> {
   try {
@@ -72,6 +72,7 @@ export async function rankingsHealth(): Promise<RankingsHealth> {
       : { ok: true, runId: meta.runId, publishedAt: meta.publishedAt, formulaVersion: meta.formulaVersion };
   } catch (err) {
     logFailure("rankingsHealth", err);
-    return { ok: false, error: publicErrorCode(err) };
+    // The kind of host value (ipv4, hostname, localhost, invalid...), never the value itself.
+    return { ok: false, error: publicErrorCode(err), dbHostKind: describeHost(process.env.DB_HOST) };
   }
 }

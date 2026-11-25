@@ -37,15 +37,54 @@ export interface MariaStoreConfig {
   beforeSwap?: () => Promise<void>;
 }
 
-/** Reads DB_* variables. Throws listing every missing one, without printing values. */
+/** Trims whitespace and one pair of matching surrounding quotes, as pasted into hosting dashboards. */
+export function cleanEnvValue(v: string): string {
+  const t = v.trim();
+  const m = /^(["'])(.*)\1$/.exec(t);
+  return (m ? (m[2] as string) : t).trim();
+}
+
+/**
+ * Splits a pasted host value: drops a scheme or path ("mysql://h/x"), and takes a trailing ":port".
+ * IPv6 literals in brackets keep their colons.
+ */
+export function parseHost(raw: string): { host: string; port?: number } {
+  let h = cleanEnvValue(raw).replace(/^[a-z][a-z0-9+.-]*:\/\//i, "");
+  h = h.split("/")[0] ?? "";
+  const bracketed = /^\[([^\]]+)\](?::(\d+))?$/.exec(h);
+  if (bracketed) return { host: bracketed[1] as string, ...(bracketed[2] ? { port: Number(bracketed[2]) } : {}) };
+  const withPort = /^([^:]+):(\d+)$/.exec(h);
+  if (withPort) return { host: withPort[1] as string, port: Number(withPort[2]) };
+  return { host: h };
+}
+
+/** What kind of value DB_HOST holds, for the health check. Says nothing about the value itself. */
+export function describeHost(raw: string | undefined): "missing" | "ipv4" | "ipv6" | "localhost" | "hostname" | "invalid" {
+  if (raw === undefined || cleanEnvValue(raw) === "") return "missing";
+  const { host } = parseHost(raw);
+  if (host === "localhost") return "localhost";
+  const v = isIP(host);
+  if (v === 4) return "ipv4";
+  if (v === 6) return "ipv6";
+  return /^(?=.{1,253}$)([a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)(\.[a-z0-9]([a-z0-9-]{0,61}[a-z0-9])?)*$/i.test(host) ? "hostname" : "invalid";
+}
+
+/**
+ * Reads DB_* variables. Throws listing every missing one, without printing values.
+ * Host, port, database and user are cleaned of pasted quotes and whitespace; the password is used as given.
+ */
 export function configFromEnv(env: NodeJS.ProcessEnv = process.env): MariaStoreConfig {
-  const missing = ["DB_HOST", "DB_NAME", "DB_USER", "DB_PASSWORD"].filter((k) => !env[k]);
+  const missing = ["DB_HOST", "DB_NAME", "DB_USER", "DB_PASSWORD"].filter((k) => !env[k] || cleanEnvValue(env[k] as string) === "");
   if (missing.length > 0) throw new Error(`Missing environment variables: ${missing.join(", ")}`);
+  const { host, port: hostPort } = parseHost(env.DB_HOST as string);
+  const portText = env.DB_PORT ? cleanEnvValue(env.DB_PORT) : "";
+  const port = portText !== "" ? Number(portText) : (hostPort ?? 3306);
+  if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error("DB_PORT is not a valid port number");
   return {
-    host: env.DB_HOST as string,
-    port: env.DB_PORT ? Number(env.DB_PORT) : 3306,
-    database: env.DB_NAME as string,
-    user: env.DB_USER as string,
+    host,
+    port,
+    database: cleanEnvValue(env.DB_NAME as string),
+    user: cleanEnvValue(env.DB_USER as string),
     password: env.DB_PASSWORD as string,
   };
 }
