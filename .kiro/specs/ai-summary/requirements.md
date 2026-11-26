@@ -20,6 +20,8 @@ Acceptance criteria:
 6. THE summary SHALL be labelled as AI-written and checked against the records below, with the product disclaimer (not legal advice).
 7. WHEN every housing section is empty, THE summary SHALL say so plainly and SHALL NOT describe the building as safe or well kept (product.md).
 
+8. THE address given to the model SHALL come from the city's records (the stored PLUTO address), never from the request. Summaries are cached and shared between visitors, so a request value would let one crafted link put text into a prompt whose answer later visitors see. (Found 2026-11-26 while writing the demo script: the page passed `?address=` through to the prompt, and the cache key didn't include it.)
+
 ## Requirement 2: Tone
 1. The title is themed ("The medium's reading", design-system.md); the sentences are plain, factual and neutral, with no spooky wording inside them.
 2. No names of people, and no apartment numbers. The input already contains no names (building-dossier Requirement 4); apartment numbers are removed from violation texts before they are sent.

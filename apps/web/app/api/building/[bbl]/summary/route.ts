@@ -13,7 +13,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ bbl: str
   if (bbl === null || (rawBin && bin === null)) {
     return Response.json({ kind: "bad_request" }, { status: 400, headers: { "Cache-Control": "no-store" } });
   }
-  const address = (url.searchParams.get("address") ?? "").slice(0, 200).trim() || `Building ${bbl}`;
-  const payload = await loadSummary({ bbl, bin }, address);
+  // Any `address` query parameter is ignored on purpose (see loadSummary).
+  const payload = await loadSummary({ bbl, bin });
   return Response.json(payload, { headers: { "Cache-Control": payload.kind === "ok" ? "public, max-age=300" : "no-store" } });
 }

@@ -54,7 +54,7 @@ export default async function BuildingPage({
       </header>
       <div className="record-body">
         <RankingSection ranking={ranking} />
-        <MediumsReading bbl={bbl} bin={bin} address={title} />
+        <MediumsReading bbl={bbl} bin={bin} />
         <Dossier bbl={bbl} bin={bin} />
       </div>
     </div>

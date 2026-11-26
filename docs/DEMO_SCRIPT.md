@@ -14,7 +14,7 @@ Narration is about 390 words, roughly 2:40 at a calm pace. Read it aloud once wi
    for q in "bbl=3013610043&bin=3036097&a=1248+SAINT+MARK%27S+AVENUE" "bbl=1015500031&bin=1050055&a=350+EAST+88+STREET" "bbl=3013770043&a=1321+ST+JOHNS+PLACE"; do
      bbl=$(echo "$q" | sed 's/.*bbl=\([0-9]*\).*/\1/'); bin=$(echo "$q" | grep -o 'bin=[0-9]*' | cut -d= -f2)
      for s in pluto violations complaints service_requests evictions permits ranking; do curl -s -o /dev/null "$B/api/building/$bbl/$s${bin:+?bin=$bin}" & done; wait
-     curl -s -o /dev/null "$B/api/building/$bbl/summary?${bin:+bin=$bin&}address=x"
+     curl -s -o /dev/null "$B/api/building/$bbl/summary${bin:+?bin=$bin}"
    done; curl -s -o /dev/null "$B/neighborhood/BK0802"; echo warmed
    ```
    Then open each demo page once in the browser. Caches reset at midnight New York time and on every deploy, so don't deploy between warming and recording.

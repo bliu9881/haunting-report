@@ -42,7 +42,12 @@ const NOT_RANKED: Record<string, string> = {
 
 const SECTIONS: DossierSource[] = ["pluto", "violations", "complaints", "service_requests", "evictions", "permits"];
 
-export async function loadSummary(building: DossierBuilding, address: string): Promise<SummaryPayload> {
+/**
+ * The address the model sees comes from the city's records, never from the request: the page URL is
+ * visitor-controlled, and summaries are cached and shared, so a URL value would let one crafted link
+ * put arbitrary text into a prompt whose answer every later visitor sees.
+ */
+export async function loadSummary(building: DossierBuilding): Promise<SummaryPayload> {
   const apiKey = process.env.GEMINI_API_KEY?.trim();
   if (!apiKey) return { kind: "unavailable", reason: "not_configured" };
   const model = process.env.GEMINI_MODEL?.trim() || DEFAULT_GEMINI_MODEL;
@@ -58,6 +63,7 @@ export async function loadSummary(building: DossierBuilding, address: string): P
 
   const key = `summary|${building.bbl}|${building.bin ?? ""}|${window.end}|${model}`;
   return cache.get(key, async () => {
+    const address = ranking.kind !== "error" && ranking.building ? ranking.building.address : "this building";
     const input: SummaryInput = {
       address,
       window,

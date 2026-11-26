@@ -15,21 +15,19 @@ const SOURCE_NAMES: Record<string, string> = {
   permits: "permits",
 };
 
-export function MediumsReading({ bbl, bin, address }: { bbl: string; bin: string | null; address: string }) {
+export function MediumsReading({ bbl, bin }: { bbl: string; bin: string | null }) {
   const [payload, setPayload] = useState<Payload | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    const params = new URLSearchParams({ address });
-    if (bin) params.set("bin", bin);
-    fetch(`/api/building/${bbl}/summary?${params}`, { signal: controller.signal })
+    fetch(`/api/building/${bbl}/summary${bin ? `?bin=${bin}` : ""}`, { signal: controller.signal })
       .then((r) => r.json() as Promise<Payload>)
       .then(setPayload)
       .catch(() => {
         if (!controller.signal.aborted) setPayload({ kind: "unavailable", reason: "network" });
       });
     return () => controller.abort();
-  }, [bbl, bin, address]);
+  }, [bbl, bin]);
 
   return (
     <section className="reading" id="section-reading" aria-busy={payload === null} aria-labelledby="reading-title">
