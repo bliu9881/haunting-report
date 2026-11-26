@@ -1,0 +1,29 @@
+{
+ "building": {
+  "bbl": "1015500031",
+  "bin": "1050055"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "64uk-42ks",
+   "params": {
+    "$select": "yearbuilt, numfloors, unitsres, unitstotal, bldgclass",
+    "$where": "bbl = '1015500031'"
+   },
+   "status": 200,
+   "body": [
+    {
+     "yearbuilt": "1900",
+     "numfloors": "4.0000000",
+     "unitsres": "0",
+     "unitstotal": "1",
+     "bldgclass": "O2"
+    }
+   ]
+  }
+ ]
+}

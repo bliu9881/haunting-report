@@ -1,0 +1,33 @@
+{
+ "building": {
+  "bbl": "3013610043",
+  "bin": "3036097"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "6z8x-wfk4",
+   "params": {
+    "$select": "executed_date",
+    "$where": "bbl = '3013610043' AND residential_commercial_ind = 'Residential'",
+    "$order": "executed_date DESC",
+    "$limit": "1000"
+   },
+   "status": 200,
+   "body": [
+    {
+     "executed_date": "2026-10-21T00:00:00.000"
+    },
+    {
+     "executed_date": "2019-07-25T00:00:00.000"
+    },
+    {
+     "executed_date": "2017-10-05T00:00:00.000"
+    }
+   ]
+  }
+ ]
+}

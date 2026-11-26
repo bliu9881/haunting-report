@@ -1,0 +1,36 @@
+{
+ "building": {
+  "bbl": "1015500031",
+  "bin": "1050055"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "ygpa-z7cr",
+   "params": {
+    "$select": "major_category, count(distinct complaint_id) as n",
+    "$where": "bbl = '1015500031' AND received_date >= '2023-11-25' AND received_date <= '2026-11-25T23:59:59.999'",
+    "$group": "major_category",
+    "$order": "n DESC"
+   },
+   "status": 200,
+   "body": []
+  },
+  {
+   "dataset": "ygpa-z7cr",
+   "params": {
+    "$select": "count(distinct complaint_id) as n",
+    "$where": "bbl = '1015500031' AND complaint_status = 'OPEN'"
+   },
+   "status": 200,
+   "body": [
+    {
+     "n": "0"
+    }
+   ]
+  }
+ ]
+}

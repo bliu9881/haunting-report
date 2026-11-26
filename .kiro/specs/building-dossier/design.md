@@ -39,7 +39,9 @@ Per-source queries (from the 2026-11-26 probe):
 | Evictions | 1: `executed_date` for residential evictions, newest first (dates only) |
 | DOB | 2: legacy by `bin__`, DOB NOW by `bin`; merged, newest 10 |
 
-A source with two queries runs them in parallel and fails as a whole if either fails, so a section never shows half its data.
+A source with two queries runs them in parallel and fails as a whole if either fails, so a section never shows half its data. The exception is permits: its two queries hit two separate systems, so each is optional, and the section reports which one is missing (`unavailable`).
+
+PLUTO and HPD complaints store `bbl` as a number column. A quoted BBL (`bbl = '3013610043'`) matched the same rows as an unquoted one for both (probed 2026-11-26), so every adapter quotes identifiers the same way.
 
 Lookups for words (pure, tested): building class (D1 → "Elevator apartments"), DOB job type (A1/A2/A3/NB/DM...), and citation stripping for violation text.
 

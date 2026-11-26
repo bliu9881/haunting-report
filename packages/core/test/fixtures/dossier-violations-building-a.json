@@ -1,0 +1,207 @@
+{
+ "building": {
+  "bbl": "3013610043",
+  "bin": "3036097"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "wvxf-dwi5",
+   "params": {
+    "$select": "class, count(*) as n",
+    "$where": "bbl = '3013610043' AND violationstatus = 'Open'",
+    "$group": "class"
+   },
+   "status": 200,
+   "body": [
+    {
+     "class": "A",
+     "n": "14"
+    },
+    {
+     "class": "B",
+     "n": "84"
+    },
+    {
+     "class": "C",
+     "n": "23"
+    }
+   ]
+  },
+  {
+   "dataset": "wvxf-dwi5",
+   "params": {
+    "$select": "violationid, class, inspectiondate, novdescription, currentstatus, rentimpairing",
+    "$where": "bbl = '3013610043' AND violationstatus = 'Open'",
+    "$order": "inspectiondate DESC, violationid DESC",
+    "$limit": "20"
+   },
+   "status": 200,
+   "body": [
+    {
+     "violationid": "19222064",
+     "class": "B",
+     "inspectiondate": "2026-09-16T00:00:00.000",
+     "novdescription": "§ 27-2005 ADM CODE PROPERLY REPAIR WITH SIMILAR MATERIAL THE BROKEN OR DEFECTIVE CAULKING AROUND BATHTUB IN THE BATHROOM LOCATED AT APT 2I, 2nd STORY, 1st APARTMENT FROM NORTH AT EAST",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19222063",
+     "class": "B",
+     "inspectiondate": "2026-09-16T00:00:00.000",
+     "novdescription": "§ 27-2005 ADM CODE REPAIR THE BROKEN OR DEFECTIVE PLASTERED SURFACES AND PAINT IN A UNIFORM COLOR THE CEILING, SOUTH AND WEST WALLS. IN THE BATHROOM LOCATED AT APT 2I, 2nd STORY, 1st APARTMENT FROM NORTH AT EAST",
+     "currentstatus": "NOV SENT OUT",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19222062",
+     "class": "B",
+     "inspectiondate": "2026-09-16T00:00:00.000",
+     "novdescription": "§ 27-2026, 2027 HMC: PROPERLY REPAIR THE SOURCE AND ABATE THE EVIDENCE OF A WATER LEAK AT CEILING, SOUTH AND WEST WALLS. IN THE BATHROOM LOCATED AT APT 2I, 2nd STORY, 1st APARTMENT FROM NORTH AT EAST",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19222061",
+     "class": "C",
+     "inspectiondate": "2026-09-16T00:00:00.000",
+     "novdescription": "HMC ADM CODE: § 27-2017.4 ABATE THE INFESTATION CONSISTING OF MICE IN THE ENTIRE APARTMENT LOCATED AT APT 2I, 2nd STORY, 1st APARTMENT FROM NORTH AT EAST",
+     "currentstatus": "NOTICE OF ISSUANCE SENT TO TENANT",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19222060",
+     "class": "C",
+     "inspectiondate": "2026-09-16T00:00:00.000",
+     "novdescription": "HMC ADM CODE: § 27-2017.4 ABATE THE INFESTATION CONSISTING OF ROACHES IN THE ENTIRE APARTMENT LOCATED AT APT 2I, 2nd STORY, 1st APARTMENT FROM NORTH AT EAST",
+     "currentstatus": "NOTICE OF ISSUANCE SENT TO TENANT",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19222059",
+     "class": "C",
+     "inspectiondate": "2026-09-16T00:00:00.000",
+     "novdescription": "§ 27-2005, 27-2007, 27-2041.1 HMC, §238, § 309; § 107 (2) ( C) MDL AND 28 RCNY §25-171: REPLACE OR REPAIR THE SELF-CLOSING DOORS THAT IS MISSING OR DEFECTIVE HINGES AT DOOR IN THE ENTRANCE LOCATED AT APT 2I, 2nd STORY, 1st APARTMENT FROM NORTH AT EAST",
+     "currentstatus": "NOV SENT OUT",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19222058",
+     "class": "B",
+     "inspectiondate": "2026-09-16T00:00:00.000",
+     "novdescription": "§ 27-2005 ADM CODE PROPERLY REPAIR WITH SIMILAR MATERIAL THE BROKEN OR DEFECTIVE CAULKING AROUND SINK IN THE KITCHEN LOCATED AT APT 2I, 2nd STORY, 1st APARTMENT FROM NORTH AT EAST",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19222057",
+     "class": "B",
+     "inspectiondate": "2026-09-16T00:00:00.000",
+     "novdescription": "§ 27-2005 ADM CODE REPAIR THE BROKEN OR DEFECTIVE PLASTERED SURFACES AND PAINT IN A UNIFORM COLOR THE CEILING AND NORTH WALL IN THE KITCHEN LOCATED AT APT 2I, 2nd STORY, 1st APARTMENT FROM NORTH AT EAST",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19227515",
+     "class": "A",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2013 ADM CODE PAINT WITH LIGHT COLORED PAINT TO THE SATISFACTION OF THIS DEPARTMENT ALL PEELING PAINT SURFACES IN THE KITCHEN , THE FOYER , THE PRIVATE HALLWAY , THE 1st ROOM FROM NORTH AT EAST, THE BATHROOM LOCATED AT APT 2E, 2nd STORY, 3rd APARTMENT FROM SOUTH AT WEST , SECTION ''WEST''",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216348",
+     "class": "C",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005, 27-2007, 27-2041.1 HMC, §238, § 309; § 107 (2) ( C) MDL AND 28 RCNY §25-171: REPLACE OR REPAIR THE SELF-CLOSING DOORS THAT IS MISSING OR DEFECTIVE HINGES AT, HOPPER DOOR TO CHUTE 'S COMPACTOR , EAST WALL, WEST SECTION, AT PUBLIC HALL, 2nd STORY",
+     "currentstatus": "NOV SENT OUT",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216347",
+     "class": "C",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005, 27-2007, 27-2041.1 HMC, §238, § 309; § 107 (2) ( C) MDL AND 28 RCNY §25-171: REPLACE OR REPAIR THE SELF-CLOSING DOORS THAT IS MISSING OR DEFECTIVE HINGES AT EXIT DOOR, SOUTH WALL, LEADING TO SOUTH YARD AT PUBLIC HALL, 1st STORY",
+     "currentstatus": "NOV SENT OUT",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216346",
+     "class": "B",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005 HMC: PROPERLY REPAIR OR REPLACE THE BROKEN OR DEFECTIVE CORRRODED IRON SADDLE AT, BUILDING ENTRANCE DOOR, NORTH WALL, AT PUBLIC HALL, 1st STORY",
+     "currentstatus": "NOV CERTIFIED ON TIME",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216344",
+     "class": "B",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005, 2007 ADM CODE REMOVE THE ILLEGAL FASTENING PADLOCKED AND CHAIN AT, IRON GATE TO STAIRS BELOW GRADE, BASEMENT STORY, NORTHEAST SECTION, EAST YARD",
+     "currentstatus": "NOV CERTIFIED ON TIME",
+     "rentimpairing": "Y"
+    },
+    {
+     "violationid": "19216343",
+     "class": "B",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005 HMC: PROPERLY REPAIR OR REPLACE THE BROKEN OR DEFECTIVE UNHINGED IRON EXIT GATE AT IRON MESH ENCLOSURE TO , STAIR BELOW GRADE, NORTHEAST SECTION, EAST YARD",
+     "currentstatus": "NOV CERTIFIED ON TIME",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216342",
+     "class": "B",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005 ADM CODE PROPERLY REPAIR WITH SIMILAR MATERIAL THE BROKEN OR DEFECTIVE DETERIORATED AND MISSING MORTAR AT, BRICK JOINTS , NOTHEAST SECTION, 1ST STORY , BUILDING FRONT YARD",
+     "currentstatus": "NOV CERTIFIED ON TIME",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216341",
+     "class": "B",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005 ADM CODE PROPERLY REPAIR WITH SIMILAR MATERIAL THE BROKEN OR DEFECTIVE WOOD FLOOR IN THE 1st ROOM FROM NORTH AT WEST LOCATED AT APT 2E, 2nd STORY, 3rd APARTMENT FROM SOUTH AT WEST , SECTION ''WEST''",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216340",
+     "class": "B",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005 ADM CODE PROPERLY SECURE THE LOOSE FINN RADIATOR COVER AT NORTH WALL IN THE 1st ROOM FROM NORTH AT WEST LOCATED AT APT 2E, 2nd STORY, 3rd APARTMENT FROM SOUTH AT WEST , SECTION ''WEST''",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216339",
+     "class": "B",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005 HMC: PROPERLY REPAIR OR REPLACE THE BROKEN OR DEFECTIVE CRACKED WOOD DOOR IN THE ENTRANCE AT SOUTH WALL IN THE 1st ROOM FROM NORTH AT WEST LOCATED AT APT 2E, 2nd STORY, 3rd APARTMENT FROM SOUTH AT WEST , SECTION ''WEST''",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216338",
+     "class": "B",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005 ADM CODE PROPERLY REPAIR WITH SIMILAR MATERIAL THE BROKEN OR DEFECTIVE WOOD FLOOR IN THE PRIVATE HALLWAY LOCATED AT APT 2E, 2nd STORY, 3rd APARTMENT FROM SOUTH AT WEST , SECTION ''WEST''",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    },
+    {
+     "violationid": "19216336",
+     "class": "B",
+     "inspectiondate": "2026-09-13T00:00:00.000",
+     "novdescription": "§ 27-2005 HMC: PROPERLY REPAIR OR REPLACE THE BROKEN OR DEFECTIVE THE EXHAUST VENTILATION SYSTEM AT EAST WALL IN THE KITCHEN LOCATED AT APT 2E, 2nd STORY, 3rd APARTMENT FROM SOUTH AT WEST , SECTION ''WEST''",
+     "currentstatus": "CIV14 MAILED",
+     "rentimpairing": "N"
+    }
+   ]
+  }
+ ]
+}

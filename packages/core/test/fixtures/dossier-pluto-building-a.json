@@ -1,0 +1,29 @@
+{
+ "building": {
+  "bbl": "3013610043",
+  "bin": "3036097"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "64uk-42ks",
+   "params": {
+    "$select": "yearbuilt, numfloors, unitsres, unitstotal, bldgclass",
+    "$where": "bbl = '3013610043'"
+   },
+   "status": 200,
+   "body": [
+    {
+     "yearbuilt": "1926",
+     "numfloors": "4.0000000",
+     "unitsres": "48",
+     "unitstotal": "48",
+     "bldgclass": "D1"
+    }
+   ]
+  }
+ ]
+}

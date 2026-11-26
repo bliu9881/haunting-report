@@ -1,0 +1,33 @@
+{
+ "building": {
+  "bbl": "1015500031",
+  "bin": "1050055"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "wvxf-dwi5",
+   "params": {
+    "$select": "class, count(*) as n",
+    "$where": "bbl = '1015500031' AND violationstatus = 'Open'",
+    "$group": "class"
+   },
+   "status": 200,
+   "body": []
+  },
+  {
+   "dataset": "wvxf-dwi5",
+   "params": {
+    "$select": "violationid, class, inspectiondate, novdescription, currentstatus, rentimpairing",
+    "$where": "bbl = '1015500031' AND violationstatus = 'Open'",
+    "$order": "inspectiondate DESC, violationid DESC",
+    "$limit": "20"
+   },
+   "status": 200,
+   "body": []
+  }
+ ]
+}

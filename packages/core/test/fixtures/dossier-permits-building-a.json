@@ -1,0 +1,74 @@
+{
+ "building": {
+  "bbl": "3013610043",
+  "bin": "3036097"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "ipu4-2q9a",
+   "params": {
+    "$select": "job__, job_type, work_type, permit_status, issuance_date, filing_date",
+    "$where": "bin__ = '3036097'",
+    "$limit": "500"
+   },
+   "status": 200,
+   "body": [
+    {
+     "job__": "302043811",
+     "job_type": "A3",
+     "work_type": "EQ",
+     "permit_status": "ISSUED",
+     "issuance_date": "12/06/2005",
+     "filing_date": "12/06/2005"
+    },
+    {
+     "job__": "302039103",
+     "job_type": "A3",
+     "work_type": "OT",
+     "permit_status": "ISSUED",
+     "issuance_date": "12/06/2005",
+     "filing_date": "12/06/2005"
+    },
+    {
+     "job__": "340592264",
+     "job_type": "A2",
+     "work_type": "BL",
+     "permit_status": "ISSUED",
+     "issuance_date": "03/22/2018",
+     "filing_date": "03/22/2018"
+    },
+    {
+     "job__": "340592264",
+     "job_type": "A2",
+     "work_type": "PL",
+     "permit_status": "ISSUED",
+     "issuance_date": "03/22/2018",
+     "filing_date": "03/22/2018"
+    }
+   ]
+  },
+  {
+   "dataset": "w9ak-ipjd",
+   "params": {
+    "$select": "job_filing_number, job_type, filing_status, filing_date, first_permit_date",
+    "$where": "bin = '3036097'",
+    "$order": "filing_date DESC",
+    "$limit": "200"
+   },
+   "status": 200,
+   "body": [
+    {
+     "job_filing_number": "B00019646-I1",
+     "job_type": "Alteration",
+     "filing_status": "Permit Entire",
+     "filing_date": "2018-02-14T15:51:50.000",
+     "first_permit_date": "2018-02-15T16:16:49.000"
+    }
+   ]
+  }
+ ]
+}

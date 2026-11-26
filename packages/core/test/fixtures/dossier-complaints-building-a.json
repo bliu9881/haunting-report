@@ -1,0 +1,81 @@
+{
+ "building": {
+  "bbl": "3013610043",
+  "bin": "3036097"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "ygpa-z7cr",
+   "params": {
+    "$select": "major_category, count(distinct complaint_id) as n",
+    "$where": "bbl = '3013610043' AND received_date >= '2023-11-25' AND received_date <= '2026-11-25T23:59:59.999'",
+    "$group": "major_category",
+    "$order": "n DESC"
+   },
+   "status": 200,
+   "body": [
+    {
+     "major_category": "HEAT/HOT WATER",
+     "n": "39"
+    },
+    {
+     "major_category": "DOOR/WINDOW",
+     "n": "10"
+    },
+    {
+     "major_category": "UNSANITARY CONDITION",
+     "n": "10"
+    },
+    {
+     "major_category": "WATER LEAK",
+     "n": "8"
+    },
+    {
+     "major_category": "PAINT/PLASTER",
+     "n": "8"
+    },
+    {
+     "major_category": "PLUMBING",
+     "n": "7"
+    },
+    {
+     "major_category": "FLOORING/STAIRS",
+     "n": "6"
+    },
+    {
+     "major_category": "ELECTRIC",
+     "n": "5"
+    },
+    {
+     "major_category": "GENERAL",
+     "n": "3"
+    },
+    {
+     "major_category": "APPLIANCE",
+     "n": "2"
+    },
+    {
+     "major_category": "SAFETY",
+     "n": "2"
+    }
+   ]
+  },
+  {
+   "dataset": "ygpa-z7cr",
+   "params": {
+    "$select": "count(distinct complaint_id) as n",
+    "$where": "bbl = '3013610043' AND complaint_status = 'OPEN'"
+   },
+   "status": 200,
+   "body": [
+    {
+     "n": "1"
+    }
+   ]
+  }
+ ]
+}

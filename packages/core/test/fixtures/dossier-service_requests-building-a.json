@@ -1,0 +1,65 @@
+{
+ "building": {
+  "bbl": "3013610043",
+  "bin": "3036097"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "erm2-nwe9",
+   "params": {
+    "$select": "complaint_type, count(*) as n",
+    "$where": "bbl = '3013610043' AND created_date >= '2023-11-25' AND created_date <= '2026-11-25T23:59:59.999'",
+    "$group": "complaint_type",
+    "$order": "n DESC",
+    "$limit": "10"
+   },
+   "status": 200,
+   "body": [
+    {
+     "complaint_type": "HEAT/HOT WATER",
+     "n": "38"
+    },
+    {
+     "complaint_type": "Noise - Residential",
+     "n": "23"
+    },
+    {
+     "complaint_type": "UNSANITARY CONDITION",
+     "n": "17"
+    },
+    {
+     "complaint_type": "PAINT/PLASTER",
+     "n": "11"
+    },
+    {
+     "complaint_type": "DOOR/WINDOW",
+     "n": "9"
+    },
+    {
+     "complaint_type": "Illegal Parking",
+     "n": "7"
+    },
+    {
+     "complaint_type": "WATER LEAK",
+     "n": "7"
+    },
+    {
+     "complaint_type": "FLOORING/STAIRS",
+     "n": "6"
+    },
+    {
+     "complaint_type": "ELECTRIC",
+     "n": "5"
+    },
+    {
+     "complaint_type": "PLUMBING",
+     "n": "5"
+    }
+   ]
+  }
+ ]
+}

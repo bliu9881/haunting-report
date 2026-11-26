@@ -1,19 +1,19 @@
 # Tasks: Building Dossier
 
 - [x] 1. Streaming check on Hostinger (design risk). A temporary page streamed one part at once and one after 4 s. Result (2026-11-26): without compression Hostinger streams (first part 0.3 s, second 4.3 s), but with `Accept-Encoding: gzip` or `br`, which every browser sends, Hostinger's CDN buffers the whole response (first byte 4.3 s). **Decision: client-fetched sections.** Test page removed
-- [ ] 2. Shared pieces in `packages/core/src/dossier/`
-  - [ ] 2.1 Section result type: `ok` (data, row count) or `SourceError<source>`; `empty` is decided by the UI from the data
-  - [ ] 2.2 Word lookups: building class, DOB job type, HPD complaint category. Example tests
-  - [ ] 2.3 `stripCitations(novdescription)`. Examples from real values; property: never empty for non-empty input
-  - [ ] 2.4 Civil-date parsing for Socrata timestamps and DOB `MM/DD/YYYY`. Properties: round trip, invalid input gives null
-- [ ] 3. Adapters, one per source, each with recorded fixtures for building A, example tests and properties (parsers never throw, counts are non-negative integers, nothing outside `$select` is shown) (Requirements 1, 4, 5)
-  - [ ] 3.1 PLUTO building facts
-  - [ ] 3.2 HPD violations: open counts by class, 20 most recent open
-  - [ ] 3.3 HPD complaints: by category in the window, open count
-  - [ ] 3.4 311: top 10 types in the window
-  - [ ] 3.5 Evictions: count in the window, most recent date
-  - [ ] 3.6 DOB: legacy by `bin__` and DOB NOW by `bin`, merged newest 10; `not_applicable` without a BIN
-- [ ] 4. Cache in `apps/web/lib/cache.ts`: LRU 2,000 entries, 6-hour TTL, key includes the window end, in-flight sharing, failures not cached, injected clock (Requirement 3.3, 3.4)
+- [x] 2. Shared pieces in `packages/core/src/dossier/`
+  - [x] 2.1 Section result type: `ok` (data, row count) or `SourceError<source>`; `empty` is decided by the UI from the data
+  - [x] 2.2 Word lookups: building class, DOB job type, HPD complaint category. Example tests
+  - [x] 2.3 `stripCitations(novdescription)`. Examples from real values; property: never empty for non-empty input. Checked against 1,000 real descriptions from all five boroughs: the first version left a citation at the start of 132 and missed 53 entirely; the final version leaves none
+  - [x] 2.4 Civil-date parsing for Socrata timestamps and DOB `MM/DD/YYYY`. Properties: round trip, invalid input gives null
+- [x] 3. Adapters, one per source (`packages/core/src/dossier/adapters.ts`, fixtures recorded by `npm run record:dossier -w @haunting/core`), each with recorded fixtures for building A, example tests and properties (parsers never throw, counts are non-negative integers, nothing outside `$select` is shown) (Requirements 1, 4, 5)
+  - [x] 3.1 PLUTO building facts
+  - [x] 3.2 HPD violations: open counts by class, 20 most recent open
+  - [x] 3.3 HPD complaints: by category in the window, open count
+  - [x] 3.4 311: top 10 types in the window
+  - [x] 3.5 Evictions: count in the window, most recent date
+  - [x] 3.6 DOB: legacy by `bin__` and DOB NOW by `bin`, merged newest 10; `not_applicable` without a BIN. Each permit system is optional: if one fails (the legacy one often times out), the other's permits still show, and the section says which system is missing
+- [x] 4. Cache in `apps/web/lib/cache.ts`: LRU 2,000 entries, 6-hour TTL, key includes the window end, in-flight sharing, failures not cached, injected clock (Requirement 3.3, 3.4)
 - [ ] 5. UI on the building page (Requirements 1 to 3)
   - [ ] 5.1 Route handler `GET /api/building/[bbl]/[section]` returning the section's JSON; one client component per section that fetches it, with loading, ok, empty, unavailable (retry button, refetches only that section) and not-applicable states
   - [ ] 5.2 "No housing records" banner when all three HPD sections are empty (Requirement 2.4)

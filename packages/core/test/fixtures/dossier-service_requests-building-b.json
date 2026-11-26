@@ -1,0 +1,33 @@
+{
+ "building": {
+  "bbl": "1015500031",
+  "bin": "1050055"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "erm2-nwe9",
+   "params": {
+    "$select": "complaint_type, count(*) as n",
+    "$where": "bbl = '1015500031' AND created_date >= '2023-11-25' AND created_date <= '2026-11-25T23:59:59.999'",
+    "$group": "complaint_type",
+    "$order": "n DESC",
+    "$limit": "10"
+   },
+   "status": 200,
+   "body": [
+    {
+     "complaint_type": "Sidewalk Condition",
+     "n": "2"
+    },
+    {
+     "complaint_type": "Noise - Vehicle",
+     "n": "1"
+    }
+   ]
+  }
+ ]
+}

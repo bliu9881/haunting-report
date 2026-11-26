@@ -1,0 +1,23 @@
+{
+ "building": {
+  "bbl": "1015500031",
+  "bin": "1050055"
+ },
+ "window": {
+  "start": "2023-11-25",
+  "end": "2026-11-25"
+ },
+ "queries": [
+  {
+   "dataset": "6z8x-wfk4",
+   "params": {
+    "$select": "executed_date",
+    "$where": "bbl = '1015500031' AND residential_commercial_ind = 'Residential'",
+    "$order": "executed_date DESC",
+    "$limit": "1000"
+   },
+   "status": 200,
+   "body": []
+  }
+ ]
+}
