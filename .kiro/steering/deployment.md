@@ -18,6 +18,8 @@ Sources: Hostinger support, "How to add a Node.js web app", "Node.js limits for 
 - Hostinger's build-failure assistant may suggest switching to Node 20 or older Next releases. Neither is needed: the glibc limit is in the server OS, and the fixes above cover it.
 - esbuild (for `apps/refresh`) is a static Go binary and is not affected.
 
+- **No streaming to browsers.** Hostinger's CDN buffers compressed responses until they finish, so React Suspense streaming does not reach browsers in pieces. It did stream when the request asked for no compression, but every browser asks for gzip or br. Load slow parts from the browser instead (building-dossier design).
+
 ## Build settings (monorepo)
 - Root directory: `./` (the whole workspace has to be installed so `apps/web` can use `packages/core`)
 - Package manager: npm, detected from `package-lock.json`
