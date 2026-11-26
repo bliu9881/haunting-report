@@ -12,6 +12,15 @@ Built with [Kiro](https://kiro.dev) for Kiroween 2026, Frankenstein category. NY
 - **Neighborhood pages.** The 10 highest-scoring buildings in each neighborhood, with their raw counts.
 - **Nightly refresh.** A scheduled job pulls fresh counts from NYC Open Data and swaps them in atomically. If a source fails or comes back short, the previous rankings stay live.
 
+## Use it from Kiro (MCP)
+`apps/mcp` is an MCP server with four read-only tools: `find_building`, `building_report`, `neighborhood_most_haunted` and `rankings_status`. It reads the live site's public JSON API, so it needs no keys.
+
+```sh
+npm install
+mkdir -p .kiro/settings && cp apps/mcp/kiro-mcp.json .kiro/settings/mcp.json
+```
+Then reconnect MCP servers in Kiro and ask, for example, "Find 1248 St Marks Ave, Brooklyn and summarize its open violations." Set `HAUNTING_BASE_URL=http://localhost:3000` in the server's `env` to use a local copy of the site. `npx tsx apps/mcp/scripts/smoke.ts` checks every tool from the command line.
+
 ## Repository layout
 | Path | What it is |
 |---|---|
@@ -19,6 +28,7 @@ Built with [Kiro](https://kiro.dev) for Kiroween 2026, Frankenstein category. NY
 | `packages/store` | Ranking storage: a MariaDB/MySQL store and an in-memory store with one shared test suite. |
 | `apps/refresh` | The nightly refresh, bundled to one file for the cron job. |
 | `apps/web` | The Next.js app. |
+| `apps/mcp` | The MCP server for Kiro and other MCP clients. |
 | `docs/data-sources.md` | Every dataset, its identifiers and quirks, and what each probe found. |
 | `.kiro/` | Kiro specs, steering and hooks used to build the project. |
 
