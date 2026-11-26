@@ -8,3 +8,15 @@
 - [x] 6. Home page: example chips and the three-step story (Requirement 3)
 - [x] 7. Screenshot review at 1200 px and 500 px; fix the ranking-count grid
 - [x] 8. Check the live site after deploy: fonts served from `/_next/static/media` (Creepster 28 KB, Special Elite 53 KB, `font/woff2`), favicon served as SVG, building A rendered with the meter in headless Chrome. Layout shift was not measured
+
+## v2: the séance ledger
+- [x] 9. Plan with the `frontend-design` skill; record it in `design-system.md`. Contrast check changed class C red from #d9475c (4.25:1) to #e86677 (5.6:1)
+- [x] 10. Fonts (IM Fell English, Atkinson Hyperlegible Next), tokens, base styles; remove Creepster, Special Elite and the fog
+- [x] 11. Spirit board meter (v2 A)
+- [x] 12. Building page as one record: index, rules instead of cards, 5 violations with "Show all" (v2 B)
+- [x] 13. Home, search, neighborhood (stacked rows on small screens), not found and error pages (v2 B.4, C)
+- [x] 14. Screenshot review at 1280, 768 and 360 px; fix; deploy and check live. Fixes from the review:
+  - The index column pushed the record below it (grid areas fixed).
+  - IM Fell's old-style figures made "1321" read as "I32I": digits inside display text now use the body face (`components/fell.tsx`); big figures use Atkinson bold.
+  - The planchette was drawn as a long needle that lay flat at "Cursed"; it is now a short teardrop that travels along the arc with its tip on the word.
+  - 360 px check through Chrome's DevTools protocol (headless screenshots can't go narrower than about 500 px, which made the earlier phone shots look cut off): home, search, building, neighborhood and not-found pages all have scrollWidth 360, so nothing scrolls sideways

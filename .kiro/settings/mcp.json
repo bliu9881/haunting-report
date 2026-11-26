@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "haunting-report": {
+      "command": "npx",
+      "args": ["--no-install", "tsx", "apps/mcp/src/main.ts"],
+      "env": {},
+      "disabled": false,
+      "autoApprove": ["find_building", "building_report", "neighborhood_most_haunted", "rankings_status"]
+    }
+  }
+}

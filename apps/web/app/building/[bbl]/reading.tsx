@@ -1,18 +1,18 @@
 "use client";
-// "The medium's reading": the AI summary panel (ai-summary design, "UI").
+// "The medium's reading": the AI summary (ai-summary design, "UI"; haunted-design v2).
 import { useEffect, useState } from "react";
 
 type Sentence = { text: string; sources: string[] };
 type Payload = { kind: "ok"; sentences: Sentence[]; model: string } | { kind: "unavailable"; reason: string };
 
 const SOURCE_NAMES: Record<string, string> = {
-  ranking: "Ranking",
-  pluto: "Building facts",
-  violations: "Violations",
-  complaints: "Complaints",
+  ranking: "ranking",
+  pluto: "building",
+  violations: "violations",
+  complaints: "complaints",
   service_requests: "311",
-  evictions: "Evictions",
-  permits: "Permits",
+  evictions: "evictions",
+  permits: "permits",
 };
 
 export function MediumsReading({ bbl, bin, address }: { bbl: string; bin: string | null; address: string }) {
@@ -32,40 +32,38 @@ export function MediumsReading({ bbl, bin, address }: { bbl: string; bin: string
   }, [bbl, bin, address]);
 
   return (
-    <section className="panel reading" aria-busy={payload === null} aria-labelledby="reading-title">
-      <div className="panel-head">
-        <h2 id="reading-title" className="reading-title">
-          The medium&apos;s reading
-        </h2>
-        <span className="label">AI summary</span>
-      </div>
+    <section className="reading" id="section-reading" aria-busy={payload === null} aria-labelledby="reading-title">
+      <h2 id="reading-title">The medium&apos;s reading</h2>
       {payload === null ? (
-        <p className="summoning">
-          <span className="candle" aria-hidden /> The medium is reading the records…
-        </p>
+        <p className="consulting">The medium is reading the records…</p>
       ) : payload.kind === "unavailable" ? (
-        <p className="muted">
+        <p className="ash">
           {payload.reason === "records_incomplete"
-            ? "A reading needs the HPD violation and complaint records, and they didn't load this time. The sections below show what did."
-            : "No reading is available for this building right now. The records below are unaffected."}
+            ? "A reading needs the HPD violation and complaint records, and they didn't load this time. The entries below show what did."
+            : "No reading is available for this building right now. The record below is unaffected."}
         </p>
       ) : (
         <>
-          <ul className="reading-list">
+          <ol>
             {payload.sentences.map((s, i) => (
               <li key={i}>
                 {s.text}{" "}
-                {s.sources.map((src) => (
-                  <a key={src} className="source-chip" href={`#section-${src}`}>
-                    {SOURCE_NAMES[src] ?? src}
-                  </a>
-                ))}
+                <span className="cite">
+                  (
+                  {s.sources.map((src, j) => (
+                    <span key={src}>
+                      {j > 0 && ", "}
+                      <a href={`#section-${src}`}>{SOURCE_NAMES[src] ?? src}</a>
+                    </span>
+                  ))}
+                  )
+                </span>
               </li>
             ))}
-          </ul>
-          <p className="muted small">
-            Written by AI ({payload.model}) from the records on this page, and checked against them before it is shown: any
-            sentence with a number that isn&apos;t in the records is removed. Not legal advice.
+          </ol>
+          <p className="fine">
+            Written by AI ({payload.model}) from the records on this page, then checked against them: a sentence with any number that
+            isn&apos;t in the records is removed before you see it. Not legal advice.
           </p>
         </>
       )}

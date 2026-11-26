@@ -1,6 +1,6 @@
 "use client";
-// The live sections of a building report (building-dossier task 5). Each section fetches its own JSON,
-// so a slow or failing city dataset only affects its own frame.
+// The live entries of a building record (building-dossier task 5; haunted-design v2 B). Each entry fetches its
+// own JSON, so a slow or failing city dataset only affects its own entry.
 import { useCallback, useEffect, useState } from "react";
 import type { BuildingFacts, Complaints, Evictions, Permits, ServiceRequests, Violations } from "@haunting/core";
 import { civilDate, count, nyDate } from "@/lib/format";
@@ -12,14 +12,15 @@ type Payload =
   | { kind: "error"; reason: string };
 type State = { status: "loading" } | { status: "done"; payload: Payload };
 
-const ORDER: Source[] = ["pluto", "violations", "complaints", "service_requests", "evictions", "permits"];
+/** Reading order: what a renter needs first. Matches the index in record-index.tsx. */
+const ORDER: Source[] = ["violations", "complaints", "service_requests", "evictions", "permits", "pluto"];
 const TITLES: Record<Source, string> = {
-  pluto: "Building facts",
-  violations: "Open HPD violations (right now)",
-  complaints: "HPD complaints",
+  violations: "Open violations",
+  complaints: "Complaints to HPD",
   service_requests: "311 requests",
   evictions: "Evictions",
-  permits: "Construction permits",
+  permits: "Permits",
+  pluto: "The building",
 };
 const DATASET_NAMES: Record<string, string> = {
   "64uk-42ks": "PLUTO",
@@ -30,6 +31,7 @@ const DATASET_NAMES: Record<string, string> = {
   "ipu4-2q9a": "DOB Permit Issuance",
   "w9ak-ipjd": "DOB NOW: Build",
 };
+const SHOWN_VIOLATIONS = 5;
 
 export function Dossier({ bbl, bin }: { bbl: string; bin: string | null }) {
   const [states, setStates] = useState<Record<Source, State>>(
@@ -65,70 +67,53 @@ export function Dossier({ bbl, bin }: { bbl: string; bin: string | null }) {
   };
   const v = done("violations");
   const c = done("complaints");
-  // Requirement 2.4: both HPD sections answered, and both are empty.
+  // building-dossier Requirement 2.4: both HPD entries answered, and both are empty.
   const noHousingRecords = v !== null && c !== null && v.rowCount === 0 && c.rowCount === 0;
 
   return (
-    <div className="dossier">
+    <>
       {noHousingRecords && (
-        <div className="banner" role="status">
-          <b>No housing records found for this lot.</b> HPD has no open violations and no complaints in the last 36 months. That
-          doesn&apos;t mean the building is in good shape: it may not be a residential building HPD covers, or its records may be filed
-          under a different lot.
+        <div className="notice" role="status">
+          <b>No housing records on file for this lot</b>
+          HPD has no open violations and no complaints from the last 36 months. That doesn&apos;t mean the building is in good shape:
+          HPD may not cover it (it may not be a rental residential building), or its records may be filed under a different lot.
         </div>
       )}
       {ORDER.map((s) => (
-        <Section key={s} source={s} state={states[s]} onRetry={() => void load(s)} bin={bin} />
+        <Entry key={s} source={s} state={states[s]} onRetry={() => void load(s)} bin={bin} />
       ))}
-    </div>
+    </>
   );
 }
 
-const LABEL_SOURCES: Record<Source, string> = {
-  pluto: "PLUTO",
-  violations: "HPD",
-  complaints: "HPD",
-  service_requests: "311",
-  evictions: "DOI",
-  permits: "DOB",
-};
-
-function Section({ source, state, onRetry, bin }: { source: Source; state: State; onRetry: () => void; bin: string | null }) {
-  const n = ORDER.indexOf(source) + 1;
+function Entry({ source, state, onRetry, bin }: { source: Source; state: State; onRetry: () => void; bin: string | null }) {
   return (
-    <section className="panel" id={`section-${source}`} aria-busy={state.status === "loading"}>
-      <div className="panel-head">
-        <h2>{TITLES[source]}</h2>
-        <span className="label">
-          Case file {n} of {ORDER.length} · {LABEL_SOURCES[source]}
-        </span>
-      </div>
+    <section className="entry" id={`section-${source}`} aria-busy={state.status === "loading"}>
+      <h2>{TITLES[source]}</h2>
       {state.status === "loading" ? (
-        <p className="summoning">
-          <span className="candle" aria-hidden /> Summoning the city&apos;s records…
-        </p>
+        <p className="consulting">Consulting the city&apos;s records…</p>
       ) : state.payload.kind === "error" ? (
-        <p className="muted">
-          This section is unavailable right now (the city&apos;s dataset didn&apos;t answer).{" "}
-          <button type="button" className="link-button" onClick={onRetry}>
-            Try again
+        <p className="ash">
+          The city&apos;s dataset didn&apos;t answer, so this entry is missing.{" "}
+          <button type="button" className="retry" onClick={onRetry}>
+            Ask again
           </button>
         </p>
       ) : state.payload.kind === "not_applicable" ? (
-        <p className="muted">This section doesn&apos;t apply to this building.</p>
+        <p className="ash">This entry doesn&apos;t apply to this building.</p>
       ) : (
         <>
           <Body source={source} payload={state.payload} bin={bin} />
-          <AsOf asOf={state.payload.asOf} />
+          <Sources asOf={state.payload.asOf} />
         </>
       )}
     </section>
   );
 }
 
-function AsOf({ asOf }: { asOf: Record<string, string> }) {
+function Sources({ asOf }: { asOf: Record<string, string> }) {
   const parts = Object.entries(asOf).map(([id, iso]) => `${DATASET_NAMES[id] ?? id}, data as of ${nyDate(iso)}`);
-  return parts.length === 0 ? null : <p className="muted small">Source: {parts.join(" · ")}.</p>;
+  return parts.length === 0 ? null : <p className="entry-source">From {parts.join("; ")}.</p>;
 }
 
 type Ok = Extract<Payload, { kind: "ok" }>;
@@ -138,86 +123,50 @@ function Body({ source, payload, bin }: { source: Source; payload: Ok; bin: stri
   switch (source) {
     case "pluto": {
       const d = payload.data as BuildingFacts | null;
-      if (d === null) return <Empty>No PLUTO record for this lot. The city&apos;s land-use file may not list it yet.</Empty>;
-      return (
-        <div className="facts">
-          <Fact value={d.yearBuilt ?? "Unknown"} label="Year built" />
-          <Fact value={d.floors ?? "Unknown"} label="Floors" />
-          <Fact value={d.unitsRes === null ? "Unknown" : count(d.unitsRes)} label="Apartments" />
-          <Fact value={d.buildingClassLabel ?? d.buildingClass ?? "Unknown"} label={`Building class${d.buildingClass ? ` (${d.buildingClass})` : ""}`} text />
-        </div>
-      );
+      if (d === null) return <p className="ash">The city&apos;s land-use file (PLUTO) has no record for this lot yet.</p>;
+      const parts = [
+        d.buildingClassLabel ? `${d.buildingClassLabel}${d.buildingClass ? ` (class ${d.buildingClass})` : ""}` : null,
+        d.yearBuilt ? `built in ${d.yearBuilt}` : null,
+        d.floors ? `${d.floors} floor${d.floors === 1 ? "" : "s"}` : null,
+        d.unitsRes !== null ? `${count(d.unitsRes)} apartment${d.unitsRes === 1 ? "" : "s"}` : null,
+      ].filter(Boolean);
+      return <p className="measure">{parts.length > 0 ? `${parts.join(", ")}.` : "PLUTO lists this lot without building details."}</p>;
     }
-    case "violations": {
-      const d = payload.data as Violations;
-      if (d.openTotal === 0) {
-        return (
-          <Empty>
-            No open HPD violations. That can mean the building is well kept, that HPD doesn&apos;t inspect it (it isn&apos;t a rental
-            residential building), or that its records are filed under another lot.
-          </Empty>
-        );
-      }
-      return (
-        <>
-          <div className="facts">
-            <Fact value={count(d.open.c)} label="Class C (immediately hazardous)" tone="c" />
-            <Fact value={count(d.open.b)} label="Class B (hazardous)" />
-            <Fact value={count(d.open.a)} label="Class A (non-hazardous)" />
-          </div>
-          <h3>Most recent open violations</h3>
-          <ul className="records">
-            {d.recent.map((r) => (
-              <li key={r.id}>
-                <span className={`badge badge-${r.class.toLowerCase()}`}>{r.class}</span> {r.text}
-                <div className="muted small">
-                  Inspected {r.inspectedOn ? civilDate(r.inspectedOn) : "on an unknown date"}
-                  {r.status ? ` · ${r.status}` : ""}
-                  {r.rentImpairing ? " · Rent impairing" : ""}
-                </div>
-              </li>
-            ))}
-          </ul>
-          {d.openTotal > d.recent.length && (
-            <p className="muted small">
-              Showing the {d.recent.length} most recent of {count(d.openTotal)} open violations.
-            </p>
-          )}
-        </>
-      );
-    }
+    case "violations":
+      return <ViolationsBody d={payload.data as Violations} />;
     case "complaints": {
       const d = payload.data as Complaints;
       if (d.byCategory.length === 0 && d.open === 0) {
-        return <Empty>No HPD complaints since {since}. Tenants may not have complained, or HPD may not cover this building.</Empty>;
+        return <p className="ash measure">No complaints to HPD since {since}. Tenants may not have complained, or HPD may not cover this building.</p>;
       }
       return (
         <>
           <p>
-            {d.open === 0 ? "No complaints are open right now." : `${count(d.open)} complaint${d.open === 1 ? " is" : "s are"} open right now.`}
+            {d.open === 0 ? "None are open right now." : `${count(d.open)} ${d.open === 1 ? "is" : "are"} open right now.`} Since {since}, by
+            problem (one complaint can name several):
           </p>
-          {d.byCategory.length > 0 && (
-            <Bars
-              caption={`Complaints since ${since}, by problem. One complaint can list several problems.`}
-              rows={d.byCategory.map((x) => ({ label: x.label, value: x.count }))}
-            />
-          )}
+          <Tally rows={d.byCategory.map((x) => ({ label: x.label, value: x.count }))} />
         </>
       );
     }
     case "service_requests": {
       const d = payload.data as ServiceRequests;
-      if (d.top.length === 0) return <Empty>No 311 requests for this lot since {since}.</Empty>;
-      return <Bars caption={`Most common 311 requests since ${since}.`} rows={d.top.map((x) => ({ label: x.label, value: x.count }))} />;
+      if (d.top.length === 0) return <p className="ash">No 311 requests for this lot since {since}.</p>;
+      return (
+        <>
+          <p>The most common requests since {since}:</p>
+          <Tally rows={d.top.map((x) => ({ label: x.label, value: x.count }))} />
+        </>
+      );
     }
     case "evictions": {
       const d = payload.data as Evictions;
-      if (d.total === 0) return <Empty>No residential evictions on record for this lot.</Empty>;
+      if (d.total === 0) return <p className="ash">No residential evictions on record for this lot.</p>;
       return (
-        <p>
+        <p className="measure">
           {d.inWindow === 0 ? "No residential evictions" : `${count(d.inWindow)} residential eviction${d.inWindow === 1 ? "" : "s"}`} since{" "}
-          {since}. {d.mostRecent && <>The most recent on record was on {civilDate(d.mostRecent)}.</>}{" "}
-          <span className="muted">({count(d.total)} on record in total.)</span>
+          {since}. {d.mostRecent && <>The most recent on record was on {civilDate(d.mostRecent)}. </>}
+          <span className="ash">{count(d.total)} on record in total.</span>
         </p>
       );
     }
@@ -225,21 +174,21 @@ function Body({ source, payload, bin }: { source: Source; payload: Ok; bin: stri
       const d = payload.data as Permits;
       const scope =
         d.scope === "building"
-          ? `Covers this building only (BIN ${bin}); other buildings on the same lot aren't included.`
-          : "Covers every building on this tax lot.";
+          ? `These cover this building only (BIN ${bin}); other buildings on the same lot aren't included.`
+          : "These cover every building on this tax lot.";
       const SYSTEM_NAMES = { DOB: "older DOB permit database (permits issued mostly before 2021)", "DOB NOW": "DOB NOW permit system" };
       const missing = d.unavailable.length > 0 && (
-        <p className="muted small">
-          The {d.unavailable.map((x) => SYSTEM_NAMES[x]).join(" and the ")} didn&apos;t answer this time, so those permits are missing
-          below. Reload the page to try again.
+        <p className="ash small">
+          The {d.unavailable.map((x) => SYSTEM_NAMES[x]).join(" and the ")} didn&apos;t answer this time, so those permits are missing below.
+          Reload the page to ask again.
         </p>
       );
       if (d.total === 0) {
         return (
           <>
             {missing}
-            <Empty>No DOB permits or filings on record.</Empty>
-            <p className="muted small">{scope}</p>
+            <p className="ash">No DOB permits or filings on record.</p>
+            <p className="fine">{scope}</p>
           </>
         );
       }
@@ -250,15 +199,15 @@ function Body({ source, payload, bin }: { source: Source; payload: Ok; bin: stri
             {d.recent.map((p) => (
               <li key={`${p.system}-${p.id}-${p.date}-${p.label}`}>
                 {p.label}
-                <div className="muted small">
+                <span className="meta">
                   {p.date ? civilDate(p.date) : "Date unknown"}
-                  {p.status ? ` · ${p.status}` : ""} · {p.system}
-                </div>
+                  {p.status ? `, ${p.status.toLowerCase()}` : ""} ({p.system})
+                </span>
               </li>
             ))}
           </ul>
-          <p className="muted small">
-            {d.total > d.recent.length ? `Showing the ${d.recent.length} most recent of ${count(d.total)}. ` : ""}
+          <p className="fine">
+            {d.total > d.recent.length ? `The ${d.recent.length} most recent of ${count(d.total)}. ` : ""}
             {scope}
           </p>
         </>
@@ -267,33 +216,74 @@ function Body({ source, payload, bin }: { source: Source; payload: Ok; bin: stri
   }
 }
 
-function Empty({ children }: { children: React.ReactNode }) {
-  return <p className="muted">{children}</p>;
-}
-
-function Fact({ value, label, tone, text }: { value: React.ReactNode; label: string; tone?: "c"; text?: boolean }) {
+function ViolationsBody({ d }: { d: Violations }) {
+  const [all, setAll] = useState(false);
+  if (d.openTotal === 0) {
+    return (
+      <p className="ash measure">
+        No open HPD violations. That can mean the building is well kept, that HPD doesn&apos;t inspect it (it isn&apos;t a rental residential
+        building), or that its records are filed under another lot.
+      </p>
+    );
+  }
+  const shown = all ? d.recent : d.recent.slice(0, SHOWN_VIOLATIONS);
   return (
-    <div className={`fact${tone ? ` ${tone}` : ""}${text ? " text" : ""}`}>
-      <b>{value}</b>
-      <span>{label}</span>
-    </div>
+    <>
+      <ul className="figures" aria-label="Open violations by class">
+        <li className="c">
+          <b>{count(d.open.c)}</b>
+          <span>class C, immediately hazardous</span>
+        </li>
+        <li className="b">
+          <b>{count(d.open.b)}</b>
+          <span>class B, hazardous</span>
+        </li>
+        <li>
+          <b>{count(d.open.a)}</b>
+          <span>class A, non-hazardous</span>
+        </li>
+      </ul>
+      <h3>The most recent</h3>
+      <ul className="records" id="violation-list">
+        {shown.map((r) => (
+          <li key={r.id}>
+            <span className={`class-mark ${r.class.toLowerCase()}`} aria-label={`Class ${r.class}`}>
+              {r.class}
+            </span>
+            {r.text}
+            <span className="meta">
+              Inspected {r.inspectedOn ? civilDate(r.inspectedOn) : "on an unknown date"}
+              {r.status ? `; ${r.status.replace(/^NOV\b/, "notice of violation")}` : ""}
+              {r.rentImpairing ? "; rent impairing" : ""}
+            </span>
+          </li>
+        ))}
+      </ul>
+      {!all && d.recent.length > SHOWN_VIOLATIONS && (
+        <button type="button" className="more" aria-controls="violation-list" onClick={() => setAll(true)}>
+          Show all {d.recent.length}
+        </button>
+      )}
+      {d.openTotal > d.recent.length && (all || d.recent.length <= SHOWN_VIOLATIONS) && (
+        <p className="fine">
+          The {d.recent.length} most recent of {count(d.openTotal)} open violations.
+        </p>
+      )}
+    </>
   );
 }
 
-function Bars({ caption, rows }: { caption: string; rows: { label: string; value: number }[] }) {
+function Tally({ rows }: { rows: { label: string; value: number }[] }) {
   const max = Math.max(1, ...rows.map((r) => r.value));
   return (
-    <figure className="bars">
-      <figcaption className="muted small">{caption}</figcaption>
+    <ul className="tally">
       {rows.map((r) => (
-        <div className="bar" key={r.label}>
-          <span className="bar-label">{r.label}</span>
-          <span className="bar-track">
-            <span className="bar-fill" style={{ width: `${(r.value / max) * 100}%` }} />
-          </span>
-          <span className="bar-value">{count(r.value)}</span>
-        </div>
+        <li key={r.label}>
+          <span>{r.label}</span>
+          <span className="n">{count(r.value)}</span>
+          <span className="bar" style={{ ["--w" as string]: `${(r.value / max) * 100}%` }} aria-hidden />
+        </li>
       ))}
-    </figure>
+    </ul>
   );
 }

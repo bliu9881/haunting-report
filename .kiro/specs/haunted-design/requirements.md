@@ -1,5 +1,25 @@
 # Requirements: Haunted Design
 
+**v2, 2026-11-26: the séance ledger.** Reworked with the `frontend-design` skill after it flagged v1 as common defaults (near-black with one bright accent, identical rounded cards, typewriter labels, Creepster). Requirement 1's levels are unchanged. Requirement 2 is replaced by the v2 rules below; Requirement 3 stands. Tokens and type live in `.kiro/steering/design-system.md`.
+
+### v2 Requirement A: The spirit board
+1. THE haunting meter SHALL be drawn as a talking-board arc with the five level names, and a planchette resting on the building's level, with the exact rank and percentile beside it in body type.
+2. THE planchette MAY settle into place once on first paint (at most 600 ms), and SHALL NOT move under `prefers-reduced-motion: reduce`.
+3. THE board SHALL keep the text equivalent from Requirement 1.3.
+
+### v2 Requirement B: One record
+1. THE building page SHALL read as one document: sections separated by rules, not boxed cards.
+2. On screens 1000 px wide or more, an index of sections SHALL stay visible beside the record and mark the section in view; on smaller screens it SHALL be a row of links under the address.
+3. THE violations list SHALL show 5 entries and a "Show all N" button that reveals the rest without a new request.
+4. Every page SHALL work from 360 px wide: no horizontal scrolling, tables become stacked rows.
+5. Body text and numbers SHALL meet WCAG AA (4.5:1); focus SHALL be visible.
+
+### v2 Requirement C: Pages without content
+1. Not found and error pages SHALL use the same voice and say what happened and what to do next.
+
+---
+v1 (2026-11-26, superseded where noted):
+
 Give the app a Halloween identity that helps a renter read the report faster, without hiding the numbers or hurting legibility. Judged under Design (20%) and Presentation (20%).
 
 ## Requirement 1: The haunting meter
