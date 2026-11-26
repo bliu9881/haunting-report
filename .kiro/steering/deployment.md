@@ -21,7 +21,7 @@ Sources: Hostinger support, "How to add a Node.js web app", "Node.js limits for 
 ## Build settings (monorepo)
 - Root directory: `./` (the whole workspace has to be installed so `apps/web` can use `packages/core`)
 - Package manager: npm, detected from `package-lock.json`
-- Build command: `npm run build` (root script: builds `@haunting/refresh`, then `@haunting/web`; the cron job runs `apps/refresh/dist/refresh.cjs`, so it has to be built on every deploy)
+- Build command: `npm run build` (root script: builds `@haunting/web`, then `@haunting/refresh`, then copies the refresh bundle to `apps/web/.next/haunting-refresh.cjs`). Hostinger deploys only the output directory, so `apps/refresh/dist/` never reaches the server; the copy inside `.next` does. The web build must run first, because `next build` empties `.next`
 - Start: `npm start` (root script: `next start` in `apps/web`, which listens on `$PORT`)
 - Output directory: `apps/web/.next`
 - `apps/web/next.config.mjs` lists `@haunting/core` and `@haunting/store` in `transpilePackages` (they ship TypeScript source) and `mysql2` in `serverExternalPackages`.
@@ -45,7 +45,7 @@ Hostinger MySQL on the same plan, for neighborhood rankings only (spec: neighbor
 - For a first load from a laptop, allow its IP under **Databases → Remote MySQL**, and remove it afterwards. Allow the **IPv4** address: scripts connect over IPv4, because home IPv6 addresses change often. A login from an address that isn't allowed fails as `ER_ACCESS_DENIED_ERROR` (1045), the same error as a wrong password.
 
 ## Refresh cron job
-- Runs the bundled refresh script nightly, in UTC: `/opt/alt/alt-nodejs24/root/bin/node --env-file=<site>/hbuilds/config/.env <site>/hbuilds/current/nodejs/apps/refresh/dist/refresh.cjs`. Schedule it after New York midnight (for example 06:00 UTC), so the window ends on the new day. A full run takes about 2 minutes
+- Runs the bundled refresh script nightly, in UTC: `/opt/alt/alt-nodejs24/root/bin/node --env-file=<site>/hbuilds/config/.env <site>/hbuilds/current/nodejs/<path to>/haunting-refresh.cjs` (the bundle inside the deployed `.next` folder; exact path to be confirmed in File Manager)``. Schedule it after New York midnight (for example 06:00 UTC), so the window ends on the new day. A full run takes about 2 minutes
 - Hostinger limits: 30 minutes per run, one command, at most 255 characters, no `%`. Cron jobs don't receive the site's env vars unless `--env-file` is passed.
 - The script's path under `hbuilds/current/nodejs/` is unverified until the first deploy.
 

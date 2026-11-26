@@ -8,7 +8,7 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "npm run build -w @haunting/refresh && npm run build -w @haunting/web",
+    "build": "npm run build -w @haunting/web && npm run build -w @haunting/refresh && node apps/refresh/scripts/copy-into-web.mjs",
     "start": "npm run start -w @haunting/web",
     "test": "npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present"
