@@ -96,7 +96,7 @@ const LABEL_SOURCES: Record<Source, string> = {
 function Section({ source, state, onRetry, bin }: { source: Source; state: State; onRetry: () => void; bin: string | null }) {
   const n = ORDER.indexOf(source) + 1;
   return (
-    <section className="panel" aria-busy={state.status === "loading"}>
+    <section className="panel" id={`section-${source}`} aria-busy={state.status === "loading"}>
       <div className="panel-head">
         <h2>{TITLES[source]}</h2>
         <span className="label">

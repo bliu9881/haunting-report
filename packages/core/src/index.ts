@@ -6,3 +6,4 @@ export * from "./ranking";
 export * from "./http";
 export * from "./socrata";
 export * from "./dossier";
+export * from "./summary";

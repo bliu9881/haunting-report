@@ -1,0 +1,13 @@
+# Tasks: AI Summary
+
+- [x] 1. `buildFacts` in `packages/core/src/summary/facts.ts`: compact facts keyed by section id, the set of numbers they contain, and which sections loaded. Separate keys for "open now" and "last 36 months" counts. Apartment and story references removed from violation texts. Tests and properties
+- [x] 2. `checkSummary` in `packages/core/src/summary/check.ts` (Requirement 1.3, 1.4): sources must have loaded; every number must appear in the facts (thousands separators, ordinals, percents and month-name dates handled); no advice, speculation or "safe/well kept" claims; at most 5 sentences; fewer than 2 means no summary. Examples from the first test outputs, and properties
+- [x] 3. Gemini client in `packages/core/src/summary/gemini.ts`: POST through the shared `fetchJson` (extended for a method and body), key in the `x-goog-api-key` header, system instruction, response schema with a source enum and `maxItems: 5`, no `temperature`, 15 s timeout, thinking parts ignored. Tests with a fake fetch
+- [x] 4. Rate limiter in `apps/web/lib/rate-limit.ts`: 20 per minute and 500 per rolling day, injected clock, tested
+- [x] 5. `loadSummary` in `apps/web/lib/summary.ts` and `GET /api/building/[bbl]/summary`: reuse the cached sections and ranking, require both HPD sections, cache successful summaries for 6 hours keyed with the model and window end, log dropped sentences
+- [x] 6. UI: "The medium's reading" panel above the ranking, sentences with source chips linking to their sections, AI label and disclaimer, candle loader, one muted line when unavailable
+- [x] 7. Live check with the real Gemini key: building A, building B (no housing records) and one neighborhood link; record outputs and anything the check dropped. Three rounds on 2026-11-26, nothing dropped by the check in any of them. Round 1 found two faithful-number but misleading patterns, both fixed in the facts and prompt:
+  - "121 open hazardous violations": the facts carried a total across classes A to I. The total was removed, so a model-made total now fails the number check; the prompt names each class exactly.
+  - "an example problem of properly repair...": violation texts are orders to the landlord, so the key is now `inspectorOrderedTheLandlordTo` and the prompt asks for "one recent order was to ...".
+  - Round 3 (building A): ranking, 23 class C and 84 class B open with one order, the top complaint problem (heat/hot water, 40) and 2 open now, 1 eviction. Building B: "not ranked because rankings only cover residential buildings with 3 or more apartments", zero counts stated plainly, no "safe" wording
+- [ ] 8. Deploy: owner updates `GEMINI_API_KEY` in Hostinger (and optionally `GEMINI_MODEL`); verify on the live site

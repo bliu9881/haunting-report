@@ -7,6 +7,7 @@ import { neighborhoodHref } from "@/lib/links";
 import { lookupRanking } from "@/lib/rankings";
 import { HauntMeter } from "../../components/haunt-meter";
 import { Dossier } from "./dossier";
+import { MediumsReading } from "./reading";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +45,7 @@ export default async function BuildingPage({
         BBL {bbl}
         {bin ? ` · BIN ${bin}` : ""}
       </p>
+      <MediumsReading bbl={bbl} bin={bin} address={title} />
       <RankingSection ranking={ranking} />
       <Dossier bbl={bbl} bin={bin} />
     </>
@@ -53,7 +55,7 @@ export default async function BuildingPage({
 function RankingSection({ ranking }: { ranking: RankingLookup }) {
   if (ranking.kind === "error") {
     return (
-      <section className="panel">
+      <section className="panel" id="section-ranking">
         <h2>Neighborhood ranking</h2>
         <p className="muted">Neighborhood rankings are unavailable right now. The rest of the report is unaffected.</p>
       </section>
@@ -61,7 +63,7 @@ function RankingSection({ ranking }: { ranking: RankingLookup }) {
   }
   if (ranking.kind === "not_rankable") {
     return (
-      <section className="panel">
+      <section className="panel" id="section-ranking">
         <h2>Neighborhood ranking</h2>
         <p className="muted">{NOT_RANKABLE[ranking.reason]}</p>
         {ranking.building && <Counts b={ranking.building} />}
@@ -71,7 +73,7 @@ function RankingSection({ ranking }: { ranking: RankingLookup }) {
   }
   const b = ranking.building;
   return (
-    <section className="panel">
+    <section className="panel" id="section-ranking">
       <div className="panel-head">
         <h2>Neighborhood ranking</h2>
         <span className="label">Case summary</span>

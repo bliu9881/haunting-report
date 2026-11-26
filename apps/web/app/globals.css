@@ -124,6 +124,15 @@ h3 { font-size: 15px; margin: 18px 0 8px; color: var(--muted); font-weight: 600;
 .meter-4 .meter-name { color: var(--blood); }
 .meter-meaning { color: var(--muted); font-size: 14px; }
 
+/* The medium's reading (AI summary) */
+.reading { border-color: rgba(124, 242, 176, 0.35); background: linear-gradient(180deg, rgba(124, 242, 176, 0.06), var(--panel)); }
+.reading-title { font-family: var(--font-label); font-weight: 400; font-size: 21px; color: var(--ecto); }
+.reading-list { margin: 4px 0 10px; padding-left: 20px; }
+.reading-list li { margin: 6px 0; line-height: 1.55; }
+.source-chip { display: inline-block; font-family: var(--font-label); font-size: 12px; line-height: 1; padding: 3px 7px; margin: 0 4px 0 0; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); text-decoration: none; vertical-align: 1px; }
+.source-chip:hover { color: var(--text); border-color: var(--ecto); }
+section[id^="section-"] { scroll-margin-top: 16px; }
+
 /* Dossier */
 .banner { border: 1px solid var(--pumpkin); background: rgba(255, 122, 26, 0.08); border-radius: 12px; padding: 14px 18px; margin: 16px 0; }
 .summoning { display: flex; align-items: center; gap: 10px; color: var(--muted); }

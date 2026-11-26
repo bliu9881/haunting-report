@@ -1,6 +1,6 @@
-# Design: AI Summary (draft)
+# Design: AI Summary
 
-Assumes D1 to D4 as recommended.
+Implements the approved decisions in requirements.md.
 
 ## Flow
 ```

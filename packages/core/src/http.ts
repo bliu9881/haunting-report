@@ -15,6 +15,9 @@ export interface FetchJsonOptions {
   /** Caller cancellation. An abort is never retried. */
   signal?: AbortSignal;
   headers?: Record<string, string>;
+  /** Default GET. */
+  method?: "GET" | "POST";
+  body?: string;
   /** Extra attempts after a network error or 5xx. Default 1. */
   retries?: number;
   /** Pause before a retry. Default 250 ms; tests pass 0. */
@@ -45,7 +48,7 @@ export async function fetchJson(url: string, opts: FetchJsonOptions): Promise<Fe
 
     let res: Response;
     try {
-      res = await opts.fetch(url, { signal, headers: opts.headers });
+      res = await opts.fetch(url, { signal, headers: opts.headers, method: opts.method ?? "GET", body: opts.body });
     } catch (err) {
       const s = stopped();
       if (s) return s;

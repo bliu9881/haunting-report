@@ -99,9 +99,12 @@ export function sentenceCase(input: string): string {
   return lowered.charAt(0).toUpperCase() + lowered.slice(1);
 }
 
-/** The text a renter sees for an HPD violation. */
+/**
+ * The text a renter sees for an HPD violation. HPD often ends a clause with a period and carries on
+ * ("CEILING. IN THE KITCHEN"); once in sentence case, a period followed by a lower-case word is joined.
+ */
 export function violationText(novdescription: string): string {
-  return sentenceCase(stripCitations(novdescription));
+  return sentenceCase(stripCitations(novdescription)).replace(/\.\s+(?=[a-z])/g, " ");
 }
 
 // ---------- 2.2 code labels ----------

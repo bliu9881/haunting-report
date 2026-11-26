@@ -109,6 +109,12 @@ describe("sentenceCase and violationText", () => {
     expect(sentenceCase("Noise - Residential")).toBe("Noise - Residential");
   });
 
+  it("joins clauses HPD splits with a period", () => {
+    expect(violationText("§ 27-2005 ADM CODE ABATE THE EVIDENCE OF A WATER LEAK AT CEILING. IN THE BATHROOM LOCATED AT APT 2I")).toBe(
+      "Abate the evidence of a water leak at ceiling in the bathroom located at apt 2I",
+    );
+  });
+
   it("combines both steps", () => {
     expect(violationText("§ 27-2017.3 HMC: TRACE AND REMEDY THE SOURCE OF MOLD")).toBe("Trace and remedy the source of mold");
   });

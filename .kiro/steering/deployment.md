@@ -34,7 +34,7 @@ Sources: Hostinger support, "How to add a Node.js web app", "Node.js limits for 
 ## Secrets and configuration
 Set these as environment variables in the Hostinger dashboard, never in the repo:
 - `SOCRATA_APP_TOKEN` (raises NYC Open Data rate limits)
-- the AI provider's API key, once the summary feature exists
+- `GEMINI_API_KEY` for the AI summary (ai-summary spec), from a Google AI Studio project with billing and prepaid credits. The free tier isn't available to this account. Optional `GEMINI_MODEL`, default `gemini-3.5-flash-lite`. Without a key the summary panel says no reading is available, and nothing else changes.
 
 ## Plan
 Business web hosting. Hostinger no longer sells Business on most pages (it's now called Unlimited), and existing Business customers keep their own limits. Confirm the real numbers under **Hosting → Details** in the dashboard. The figures below are the current Unlimited ones.
