@@ -32,7 +32,12 @@ export const MIN_ROWS: Readonly<Record<SourceName, number>> = {
   evictions: 10_000, // 21,455
 };
 
-export const SOCRATA_REFRESH_TIMEOUT_MS = 120_000;
+/**
+ * Per query. From Hostinger's shared IP without an app token, Socrata answered 2 to 4 times slower than
+ * from a laptop, and one borough query passed 120 s (run 2, 2026-11-26). Five minutes per query still
+ * fits several slow queries inside DEADLINE_MS.
+ */
+export const SOCRATA_REFRESH_TIMEOUT_MS = 300_000;
 /** Below Hostinger's 30-minute cron limit, so a slow run is recorded as failed instead of killed mid-way. */
 export const DEADLINE_MS = 25 * 60_000;
 
