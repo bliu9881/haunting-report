@@ -11,6 +11,11 @@ A 19th-century spiritualist medium's record of a building, kept like a housing l
 - **Spooky framing, plain facts.** Section titles and the meter carry the theme; numbers, dates and sources stay literal and visible. The meter never replaces the rank it summarizes.
 - **Avoid template chrome** (from the skill): no all-caps eyebrow labels over headings, no middle-dot meta strings, no monospace data labels, no "→" on links, no identical rounded cards with one shadow.
 
+## Logo
+- **Mark:** a talking-board planchette in candle gold, whose round lens looks into a lit, arched tenement window in bone. The séance and the building in one shape. Solid fills only, so it reads at 16 px. Chosen over a keyhole planchette (the keyhole vanished at 16 px) and a tenement facade (generic, unreadable small).
+- **Lockup:** the mark left of "Haunting Report" in IM Fell English, one color. Source: `apps/web/app/components/logo.tsx`; favicon `app/icon.svg`; `app/apple-icon.png` (180 px) and `app/opengraph-image.png` / `twitter-image.png` (1200×630), rendered from `docs/brand/*.html` with headless Chrome.
+- Keep the geometry identical in all four files.
+
 ## Color (`apps/web/app/globals.css`)
 | Token | Hex | Use | Contrast on `--plum` |
 |---|---|---|---|

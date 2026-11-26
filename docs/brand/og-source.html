@@ -1,0 +1,29 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+@font-face { font-family: Fell; src: url("file:///Users/bliu/projects/kiraween/node_modules/@fontsource/im-fell-english/files/im-fell-english-latin-400-normal.woff2"); }
+@font-face { font-family: FellI; src: url("file:///Users/bliu/projects/kiraween/node_modules/@fontsource/im-fell-english/files/im-fell-english-latin-400-italic.woff2"); }
+@font-face { font-family: Atk; src: url("file:///Users/bliu/projects/kiraween/node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-700-normal.woff2"); }
+html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+body { background: #1d1424; color: #eee4d3; position: relative; font-family: Fell; }
+.mark { position: absolute; left: 96px; top: 150px; width: 300px; height: 300px; }
+.text { position: absolute; left: 450px; top: 158px; right: 80px; }
+h1 { font-weight: 400; font-size: 92px; line-height: 0.95; margin: 0 0 26px; }
+p { font-family: FellI; font-size: 40px; line-height: 1.15; color: #ab9fb3; margin: 0; }
+.foot { position: absolute; left: 450px; bottom: 74px; font-family: Atk; font-size: 22px; color: #e3a34a; letter-spacing: 0.01em; }
+.rule { position: absolute; left: 450px; right: 80px; bottom: 118px; border-top: 1px solid rgba(238,228,211,.2); }
+</style>
+<body>
+<svg class="mark" viewBox="0 0 64 64">
+  <path d="M32 3 C45 15 55 30 53 46 C52 55 45 59 32 59 C19 59 12 55 11 46 C9 30 19 15 32 3 Z" fill="#e3a34a"/>
+  <circle cx="32" cy="35" r="14" fill="#1d1424"/>
+  <path d="M26 45 V33 a6 6 0 0 1 12 0 V45 Z" fill="#eee4d3"/>
+  <path d="M32 27 V45 M26 37.5 H38" stroke="#1d1424" stroke-width="1.8"/>
+</svg>
+<div class="text">
+  <h1>Haunting Report</h1>
+  <p>How haunted is your next New York building? Ask the city&rsquo;s own records.</p>
+</div>
+<div class="rule"></div>
+<div class="foot">About 172,000 buildings ranked every night, from NYC Open Data</div>
+</body>

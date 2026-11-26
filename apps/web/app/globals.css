@@ -36,7 +36,8 @@ button { font: inherit; }
 
 /* Frame */
 .site-header { max-width: 1120px; margin: 0 auto; padding: 22px 24px 0; }
-.brand { font-family: var(--fell); font-size: 24px; color: var(--bone); text-decoration: none; }
+.brand { display: inline-flex; align-items: center; gap: 11px; font-family: var(--fell); font-size: 25px; line-height: 1; color: var(--bone); text-decoration: none; }
+.brand svg { flex: none; margin-top: -3px; }
 .brand:hover { color: var(--gold); }
 main { max-width: 1120px; margin: 0 auto; padding: 8px 24px 72px; }
 .site-footer { max-width: 1120px; margin: 0 auto; padding: 28px 24px 40px; border-top: 1px solid var(--rule); color: var(--ash); font-size: 13px; }
@@ -65,6 +66,8 @@ p { margin: 0 0 14px; }
 .search button:hover { color: #f0bd6f; }
 .examples { list-style: none; padding: 0; margin: 0 0 8px; font-size: 15px; color: var(--ash); }
 .examples li { margin: 4px 0; }
+/* Inline padding enlarges the tap area to 26 px without moving the text (WCAG 2.2 target size). */
+.examples a { padding: 3px 0; }
 .method { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin: 56px 0 0; padding: 28px 0 0; border-top: 1px solid var(--rule); list-style: none; counter-reset: step; }
 .method li { counter-increment: step; }
 .method h2 { font-size: 27px; margin-bottom: 8px; }
@@ -124,7 +127,7 @@ p { margin: 0 0 14px; }
 .reading li { margin: 0 0 10px; padding-left: 4px; }
 .reading li::marker { color: var(--gold); font-family: var(--fell); }
 .cite { font-size: 13px; white-space: nowrap; }
-.cite a { color: var(--ash); }
+.cite a { color: var(--ash); padding: 4px 1px; }
 .cite a:hover { color: var(--gold); }
 
 /* Records */
@@ -189,11 +192,22 @@ p { margin: 0 0 14px; }
   .reading { padding: 18px 16px 12px; }
   .ledger thead { display: none; }
   .ledger, .ledger tbody, .ledger tr, .ledger td { display: block; width: 100%; }
-  .ledger tr { display: grid; grid-template-columns: 2.4em minmax(0, 1fr); column-gap: 8px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  /* Rank on the left; address across; the five figures in two columns beneath it. */
+  .ledger tr { display: grid; grid-template-columns: 2.4em minmax(0, 1fr) minmax(0, 1fr); column-gap: 10px; row-gap: 2px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
   .ledger td { border: 0; padding: 0; text-align: left; }
-  .ledger .rank { grid-row: span 3; }
+  .ledger .rank { grid-column: 1; grid-row: 1 / span 4; }
+  .ledger .addr { grid-column: 2 / span 2; margin-bottom: 4px; }
   .ledger .num { text-align: left; color: var(--ash); font-size: 15px; }
   .ledger .num::before { content: attr(data-label) ": "; }
+  .ledger .num.c { color: var(--blood); }
+  /* Hazard counts first, then size and score. */
+  .ledger .rank, .ledger .addr { order: 0; }
+  .ledger td[data-label="Class C"] { order: 1; }
+  .ledger td[data-label="Class B"] { order: 2; }
+  .ledger td[data-label="Class A"] { order: 3; }
+  .ledger td[data-label="Apartments"] { order: 4; }
+  .ledger td[data-label="Score"] { order: 5; }
+  .search input { font-size: 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
