@@ -80,6 +80,30 @@ Assembly took 181 ms, the publish 11.1 s, the whole run 112 s.
 - Building A: rank 266 of 2,955 in Crown Heights (North), more haunted than 90.9% of its neighbors. The neighborhood median score is 0.75.
 - The top of the BK0802 list is all 3- to 6-unit buildings (scores 108 to 167). Dividing by units makes small buildings with many violations rank highest. That's correct under D2, but see the open question in the neighborhood-rankings spec.
 
+## Per-building queries for the report (probed 2026-11-26, building A, with an app token)
+Queries are by `bbl` (HPD violations, HPD complaints, 311, evictions, PLUTO) or by BIN (`bin__` in DOB legacy, `bin` in DOB NOW).
+
+| Query | Laptop | Hostinger, 1st | Hostinger, 2nd | Rows |
+|---|---|---|---|---|
+| Violations by class and `violationstatus` | 1.8 s | 0.4 s | **503** | 7 groups |
+| 50 most recent open violations | 0.7 s | 7.1 s | 1.1 s | 50 |
+| Complaints by `major_category`, in the window | **503** | 0.6 s | 0.4 s | 11 |
+| Open complaints (`complaint_status = 'OPEN'`) | 14.6 s | 0.5 s | 0.4 s | 1 |
+| 311 by `complaint_type`, in the window | 8.3 s | 10.2 s | 0.5 s | 15 |
+| Evictions | 0.6 s | 14.2 s | 1.4 s | 3 |
+| DOB legacy permits | 0.5 s | **timeout (30 s)** | **503** | 4 |
+| DOB NOW filings | 0.5 s | 1.5 s | 0.4 s | 1 |
+| PLUTO building facts | 0.5 s | 0.3 s | 1.1 s | 1 |
+
+- Socrata returns `503 {"errorCode":"service-unavailable"}` intermittently: 4 of 36 calls here. A first query can take 7 to 15 s, while repeats are usually under 1.5 s, probably because of Socrata's cache.
+- So the report must load each source on its own, with its own timeout, and cache results. One slow or failing source must never hold up the page.
+- Field notes:
+  - `violationstatus` is `Open`/`Close`; `currentstatus` is the detailed state ("NOV SENT OUT"); `rentimpairing` is `Y`/`N`. `novdescription` contains the apartment and story.
+  - Building A: open violations C 23, B 84, A 14.
+  - DOB legacy dates are `MM/DD/YYYY` strings, not timestamps.
+  - Several columns name people: owner (`ownername`, `owner_s_*`), marshal (`marshal_*`), permittee and applicant names, and eviction apartment numbers (`eviction_apt_num`). The report does not show them.
+- The app token: the server's `hbuilds/config/.env` writes the value in a form Node's `--env-file` reads correctly, but a naive shell `cut`/`tr` parse gets it wrong (Socrata answered "Invalid app_token"). Read it through Node, as the refresh does.
+
 ## Geosearch behavior (probed day 2)
 - `confidence` is `0.8` (`match_type: "fallback"`) for every address query, right or wrong. Landmark and postcode-only queries return `1` (`"exact"`). Nothing below 0.6 has been seen.
 - Geosearch returns the nearest it can find, not only real matches. `100 Main St, New York, NY` returns five buildings numbered 668 to 719, and `123 Fake Street Queens` returns real streets in Brooklyn, Manhattan and Queens.
