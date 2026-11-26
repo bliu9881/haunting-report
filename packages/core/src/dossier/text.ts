@@ -76,8 +76,12 @@ export function stripCitations(input: string): string {
   return rest === "" ? original : rest;
 }
 
+/** Acronyms that stay upper case. "NOV" is a Notice of Violation, not November. */
+const ACRONYMS = new Set(["NOV", "HPD", "DOB", "NYC", "ECB", "OATH", "DHCR", "NYCHA"]);
+
 /**
- * ALL-CAPS city text in sentence case. Words containing a digit keep their case ("APT 2I", "2nd").
+ * ALL-CAPS city text in sentence case. Words containing a digit keep their case ("APT 2I", "CIV14"),
+ * except ordinal suffixes ("1ST" → "1st"). Known acronyms stay upper case.
  * Text that is not mostly upper case is returned unchanged.
  */
 export function sentenceCase(input: string): string {
@@ -86,7 +90,11 @@ export function sentenceCase(input: string): string {
   if (letters.length === 0 || letters.replace(/[^A-Z]/g, "").length / letters.length < 0.8) return s;
   const lowered = s
     .split(/(\s+)/)
-    .map((w) => (/\d/.test(w) ? w : w.toLowerCase()))
+    .map((w) => {
+      if (/\d/.test(w)) return w.replace(/^(\d+)(ST|ND|RD|TH)\b/, (_m, d: string, suf: string) => d + suf.toLowerCase());
+      if (ACRONYMS.has(w.replace(/[^A-Za-z]/g, "").toUpperCase())) return w.toUpperCase();
+      return w.toLowerCase();
+    })
     .join("");
   return lowered.charAt(0).toUpperCase() + lowered.slice(1);
 }

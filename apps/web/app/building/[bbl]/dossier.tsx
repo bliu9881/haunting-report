@@ -15,7 +15,7 @@ type State = { status: "loading" } | { status: "done"; payload: Payload };
 const ORDER: Source[] = ["pluto", "violations", "complaints", "service_requests", "evictions", "permits"];
 const TITLES: Record<Source, string> = {
   pluto: "Building facts",
-  violations: "Open HPD violations",
+  violations: "Open HPD violations (right now)",
   complaints: "HPD complaints",
   service_requests: "311 requests",
   evictions: "Evictions",
@@ -210,9 +210,11 @@ function Body({ source, payload, bin }: { source: Source; payload: Ok; bin: stri
         d.scope === "building"
           ? `Covers this building only (BIN ${bin}); other buildings on the same lot aren't included.`
           : "Covers every building on this tax lot.";
+      const SYSTEM_NAMES = { DOB: "older DOB permit database (permits issued mostly before 2021)", "DOB NOW": "DOB NOW permit system" };
       const missing = d.unavailable.length > 0 && (
         <p className="muted small">
-          The {d.unavailable.join(" and ")} permit system didn&apos;t answer, so its permits are missing below.
+          The {d.unavailable.map((x) => SYSTEM_NAMES[x]).join(" and the ")} didn&apos;t answer this time, so those permits are missing
+          below. Reload the page to try again.
         </p>
       );
       if (d.total === 0) {

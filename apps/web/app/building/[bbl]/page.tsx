@@ -82,7 +82,8 @@ function RankingSection({ ranking }: { ranking: RankingLookup }) {
       </p>
       <Counts b={b} />
       <p className="muted small">
-        Score = (3 × class C + 2 × class B + 1 × class A) HPD violations from {civilDate(ranking.asOf.windowStart)} to{" "}
+        These counts include closed violations; the section below lists the ones still open. Score = (3 × class C + 2 × class B + 1 ×
+        class A) HPD violations from {civilDate(ranking.asOf.windowStart)} to{" "}
         {civilDate(ranking.asOf.windowEnd)}, divided by {count(b.unitsRes)} apartments. Complaints and evictions are shown, not scored.
       </p>
       <AsOf asOf={ranking.asOf} />
@@ -90,28 +91,29 @@ function RankingSection({ ranking }: { ranking: RankingLookup }) {
   );
 }
 
+/** Counts over the ranking window, open or closed. The live violations section below shows only open ones. */
 function Counts({ b }: { b: { violations: { a: number; b: number; c: number }; complaints: number; evictions: number; unitsRes: number } }) {
   return (
     <div className="facts">
       <div className="fact c">
         <b>{count(b.violations.c)}</b>
-        <span>Class C (hazardous)</span>
+        <span>Class C violations, 36 months</span>
       </div>
       <div className="fact">
         <b>{count(b.violations.b)}</b>
-        <span>Class B</span>
+        <span>Class B violations, 36 months</span>
       </div>
       <div className="fact">
         <b>{count(b.violations.a)}</b>
-        <span>Class A</span>
+        <span>Class A violations, 36 months</span>
       </div>
       <div className="fact">
         <b>{count(b.complaints)}</b>
-        <span>HPD complaints</span>
+        <span>HPD complaints, 36 months</span>
       </div>
       <div className="fact">
         <b>{count(b.evictions)}</b>
-        <span>Evictions</span>
+        <span>Evictions, 36 months</span>
       </div>
       <div className="fact">
         <b>{count(b.unitsRes)}</b>

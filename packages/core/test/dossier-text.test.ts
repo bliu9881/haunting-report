@@ -97,6 +97,14 @@ describe("sentenceCase and violationText", () => {
     expect(sentenceCase("REPAIR THE DOOR AT APT 2I, 2nd STORY")).toBe("Repair the door at apt 2I, 2nd story");
   });
 
+  it("keeps acronyms and lower-cases ordinal suffixes", () => {
+    expect(sentenceCase("NOV SENT OUT")).toBe("NOV sent out");
+    expect(sentenceCase("NOTICE OF ISSUANCE SENT TO TENANT")).toBe("Notice of issuance sent to tenant");
+    expect(sentenceCase("CIV14 MAILED")).toBe("CIV14 mailed");
+    expect(sentenceCase("MORTAR AT 1ST STORY, HPD REQUEST")).toBe("Mortar at 1st story, HPD request");
+    expect(sentenceCase("NOVEMBER")).toBe("November");
+  });
+
   it("leaves mixed-case text alone", () => {
     expect(sentenceCase("Noise - Residential")).toBe("Noise - Residential");
   });
