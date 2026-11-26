@@ -23,6 +23,12 @@ describe("examples from docs/data-sources.md", () => {
     expect(boroughCode("Gotham")).toBeNull();
   });
 
+  it("rejects BINs without a borough digit (Requirement 4.3)", () => {
+    expect(normalizeBin("9999999")).toBeNull();
+    expect(normalizeBin("0000000")).toBeNull();
+    expect(normalizeBin("6123456")).toBeNull();
+  });
+
   it("treats placeholder BINs as unknown", () => {
     expect(normalizeBin("3000000")).toBeNull();
     expect(normalizeBin("3036097")).toBe("3036097");
@@ -92,7 +98,7 @@ describe("properties", () => {
         const bbl = normalizeBbl(x);
         if (bbl !== null) expect(bbl).toMatch(/^[1-5]\d{9}$/);
         const bin = normalizeBin(x);
-        if (bin !== null) expect(bin).toMatch(/^\d{7}$/);
+        if (bin !== null) expect(bin).toMatch(/^[1-5]\d{6}$/);
         expect(() => composeBbl(x, x, x)).not.toThrow();
       }),
     );

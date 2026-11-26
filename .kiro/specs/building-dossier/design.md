@@ -9,7 +9,7 @@ apps/web/app/building/[bbl]/page.tsx   (server: address + ranking from MySQL, as
         └─ GET /api/building/[bbl]/[source]?bin=...   (route handler, Node runtime)
               ├─ cache (apps/web/lib/cache.ts)
               └─ adapter (packages/core/src/dossier/<source>.ts)
-                    └─ socrataQuery (timeout 8 s, 1 retry)
+                    └─ socrataQuery (timeout 20 s, 1 retry)
 ```
 - The page renders immediately with six section frames in their loading state. Each section fetches its own JSON from the browser, so one slow or failing source affects only its own frame (Requirement 3.1, 3.2). Retry refetches that one section.
 
@@ -52,7 +52,7 @@ Lookups for words (pure, tested): building class (D1 → "Elevator apartments"),
 - The clock is injected, so tests control expiry.
 
 ## Section states
-`loading` (before the fetch returns) → `ok` with rows → `empty` ("No records found" plus what it can mean) → `unavailable` (error, with a retry link that reloads only that section) → `not_applicable` (DOB without a BIN). Requirement 2.4's banner needs all three HPD sections, so it is its own small component awaiting those three cached results.
+`loading` (before the fetch returns) → `ok` with rows → `empty` ("No records found" plus what it can mean) → `unavailable` (error, with a retry button that refetches only that section). One client component, `<Dossier>`, owns the six fetches, so Requirement 2.4's banner can see both HPD sections. `not_applicable` stays in the result type for future sources; permits no longer use it, because they fall back to the BBL.
 
 ## Testing
 - Adapters: recorded fixtures for building A (real responses, trimmed), example tests per parser, and property tests: parsers never throw on arbitrary rows; counts are non-negative integers; no shown field comes from a column outside `$select`.

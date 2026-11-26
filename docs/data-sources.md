@@ -96,6 +96,7 @@ Queries are by `bbl` (HPD violations, HPD complaints, 311, evictions, PLUTO) or 
 | PLUTO building facts | 0.5 s | 0.3 s | 1.1 s | 1 |
 
 - Socrata returns `503 {"errorCode":"service-unavailable"}` intermittently: 4 of 36 calls here. A first query can take 7 to 15 s, while repeats are usually under 1.5 s, probably because of Socrata's cache.
+- Second probe (2026-11-26, laptop, the six sections' queries at once and one by one): the same query took 0.3 to 11 s across three runs, and the whole set took 6.6 to 25.4 s. Running them in parallel helps, but any one can be slow.
 - So the report must load each source on its own, with its own timeout, and cache results. One slow or failing source must never hold up the page.
 - Field notes:
   - `violationstatus` is `Open`/`Close`; `currentstatus` is the detailed state ("NOV SENT OUT"); `rentimpairing` is `Y`/`N`. `novdescription` contains the apartment and story.

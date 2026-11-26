@@ -3,7 +3,12 @@ import type { DateWindow } from "../ranking/refresh-guards";
 import { socrataQuery, type Row, type SocrataOptions } from "../socrata";
 import type { DossierBuilding, DossierSource, SectionResult } from "./types";
 
-export const DOSSIER_SOURCE_TIMEOUT_MS = 8000;
+/**
+ * Per query. Socrata's per-building queries took 0.3 to 11 s for the same query on 2026-11-26, so 8 s (the first
+ * plan) failed sections that would have answered. Each section shows its own loading state, so waiting longer
+ * costs one frame, not the page. Hostinger's 120 s request limit is far above this.
+ */
+export const DOSSIER_SOURCE_TIMEOUT_MS = 20_000;
 
 export interface DossierQuery {
   dataset: string;

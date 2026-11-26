@@ -102,6 +102,7 @@ describe("parsers on real data", () => {
   it("permits: both systems merged, newest first, in words (3.6)", () => {
     const { data } = parse("permits", "building-a") as { data: import("../src/dossier").Permits };
     expect(data.total).toBe(5);
+    expect(data.scope).toBe("building");
     expect(data.unavailable).toEqual([]);
     expect(data.recent[0]).toMatchObject({ system: "DOB", label: "Alteration (several kinds of work): boiler" });
     expect(data.recent.find((p) => p.system === "DOB NOW")).toEqual({
@@ -169,14 +170,13 @@ describe("runAdapter (Requirement 3.2)", () => {
     });
   });
 
-  it("says permits are not applicable without a BIN, without any request", async () => {
-    const f = vi.fn() as unknown as typeof fetch;
-    expect(await runAdapter(ADAPTERS.permits, { bbl: A.bbl, bin: null }, W, { fetch: f })).toEqual({
-      kind: "not_applicable",
-      source: "permits",
-      reason: "no_bin",
-    });
-    expect(f).not.toHaveBeenCalled();
+  it("looks permits up by lot when there is no BIN, and says so (Requirement 2.3)", async () => {
+    const qs = ADAPTERS.permits.queries({ bbl: A.bbl, bin: null }, W) as { params: Record<string, string> }[];
+    expect(qs.map((q) => q.params.$where)).toEqual([`bbl = '${A.bbl}'`, `bbl = '${A.bbl}'`]);
+    const r = fixture("permits", "building-a");
+    const lot = ADAPTERS.permits.parse(bodies(r), { bbl: A.bbl, bin: null }, W);
+    expect(lot.data.scope).toBe("lot");
+    expect(ADAPTERS.permits.parse(bodies(r), r.building, W).data.scope).toBe("building");
   });
 
   it("uses the 8-second source timeout by default and sends the app token", async () => {
@@ -220,7 +220,7 @@ describe("adapter properties (Requirements 4, 5)", () => {
           if (!Array.isArray(qs)) continue;
           for (const q of qs) {
             const where = q.params.$where as string;
-            if (source === "permits") expect(where).toContain(`'${b.bin}'`);
+            if (source === "permits" && b.bin !== null) expect(where).toContain(`'${b.bin}'`);
             else expect(where.startsWith(`bbl = '${b.bbl}'`)).toBe(true);
           }
         }

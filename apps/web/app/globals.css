@@ -57,3 +57,17 @@ table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); }
 th { color: var(--muted); font-weight: 500; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+h3 { font-size: 15px; margin: 18px 0 8px; color: var(--muted); font-weight: 600; }
+.banner { border: 1px solid var(--accent); background: rgba(255, 122, 26, 0.08); border-radius: 12px; padding: 14px 18px; margin: 16px 0; }
+.link-button { background: none; border: 0; padding: 0; color: var(--accent); text-decoration: underline; cursor: pointer; font: inherit; }
+.records { list-style: none; padding: 0; margin: 0; }
+.records li { padding: 9px 0; border-bottom: 1px solid var(--line); }
+.badge { display: inline-block; min-width: 20px; text-align: center; font-size: 12px; font-weight: 700; border-radius: 4px; padding: 1px 5px; margin-right: 4px; background: var(--line); }
+.badge-c { background: var(--danger); color: #1a0007; }
+.badge-b { background: var(--accent); color: #160b02; }
+.bars { margin: 8px 0 0; }
+.bar { display: grid; grid-template-columns: minmax(120px, 38%) 1fr 48px; align-items: center; gap: 10px; padding: 3px 0; font-size: 14px; }
+.bar-track { height: 10px; background: var(--line); border-radius: 5px; overflow: hidden; }
+.bar-fill { display: block; height: 100%; background: var(--accent); }
+.bar-value { text-align: right; font-variant-numeric: tabular-nums; }

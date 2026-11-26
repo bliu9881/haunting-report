@@ -5,7 +5,7 @@
   - [x] 2.1 Example tests from docs/data-sources.md
   - [x] 2.2 Property tests: round trip, idempotence, padding equivalence, no throw on garbage
   - [ ] 2.3 Accept PLUTO's two-letter borough codes and `STATEN IS`, and collapse inner whitespace (Requirement 3.1, 3.2). Confirm the exact values PLUTO and 311 return before implementing
-  - [ ] 2.4 Require a leading borough digit 1 to 5 in `normalizeBin`, and tighten the BIN property assertion to `/^[1-5]\d{6}$/` (Requirement 4.3)
+  - [x] 2.4 Require a leading borough digit 1 to 5 in `normalizeBin`, and tighten the BIN property assertion to `/^[1-5]\d{6}$/` (Requirement 4.3)
   - [ ] 2.5 Reject block `00000` in `normalizeBbl` and `composeBbl`, and raise the block generator's floor to 1 so the round-trip property stops asserting a fake building (Requirement 2)
 - [x] 3. Implement `geosearch.ts` with injected fetch (Requirement 1)
   - [x] 3.1 Record `size=5` fixtures under `test/fixtures/`: buildings A and B, a bare street name, an address with no borough, a no-results response

@@ -37,15 +37,15 @@ Acceptance criteria:
 Acceptance criteria:
 1. WHEN a source answers with zero rows, THE section SHALL say "No records found", and SHALL say what that can mean for that source. For example, for violations: the building may be well kept, may not be residential, or may be recorded under another identifier.
 2. WHEN a source fails or times out, THE section SHALL say it is unavailable and offer a retry, and SHALL NOT show zero counts.
-3. WHEN the building has no BIN, THE construction section SHALL say permits can't be looked up, instead of "No records found".
-4. WHEN every HPD section is empty, THE report SHALL show one banner explaining that the building has no housing records, as product.md requires.
+3. WHEN the building has no BIN, THE construction section SHALL look permits up by BBL instead, and SHALL say they cover every building on the lot. (Changed 2026-11-26: buildings opened from a neighborhood page have no BIN, because the rankings store none. Both DOB datasets have a `bbl` column; for building B it returned 98 + 13 rows against 99 + 13 by BIN.)
+4. WHEN both HPD sections (violations and complaints) are empty, THE report SHALL show one banner explaining that the building has no housing records, as product.md requires.
 
 ## Requirement 3: Fast and resilient
 **User story:** As a renter, I want the report to appear quickly even when a city system is slow.
 
 Acceptance criteria:
 1. THE address, the ranking and the section frames SHALL render without waiting for any Socrata source.
-2. Each source SHALL load independently, with its own timeout of `DOSSIER_SOURCE_TIMEOUT_MS` (8 s) and at most one retry after a network error or 5xx (building-linker Requirement 5). A slow or failing source SHALL affect only its own section.
+2. Each source SHALL load independently, with its own timeout of `DOSSIER_SOURCE_TIMEOUT_MS` (20 s; first planned as 8 s, raised on 2026-11-26 after the same Socrata query took 0.3 to 11 s across runs) and at most one retry after a network error or 5xx (building-linker Requirement 5). A slow or failing source SHALL affect only its own section.
 3. **D2, caching (approved): in memory.** A source's successful result for a building SHALL be cached for 6 hours, in at most 2,000 entries (least recently used goes first). Failures SHALL NOT be cached. The cache resets on deploy or restart.
    - Alternative: cache in MySQL, so results survive deploys. That costs a new table and a write per lookup. Add it only if demo visits still hit cold Socrata queries.
 4. Two requests for the same building and source at the same time SHALL share one Socrata call.
@@ -62,7 +62,7 @@ Acceptance criteria:
 
 ## Requirement 5: Identifiers
 Acceptance criteria:
-1. HPD violations, HPD complaints, 311, evictions and PLUTO SHALL be queried by BBL; DOB legacy by `bin__`, DOB NOW by `bin`.
+1. HPD violations, HPD complaints, 311, evictions and PLUTO SHALL be queried by BBL; DOB legacy by `bin__`, DOB NOW by `bin`, or both by `bbl` when there is no BIN (Requirement 2.3).
 2. Every identifier placed in a query SHALL be normalized (`normalizeBbl`, `normalizeBin`) and quoted with `soqlString`.
 3. **D4, multi-building lots (approved): show the BBL's records and say so.** A tax lot can hold several buildings with different BINs, and geosearch gives one. HPD and 311 records follow the lot (BBL), while DOB records follow the building (BIN). The construction section SHALL state that it covers this building only.
 

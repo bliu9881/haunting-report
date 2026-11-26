@@ -61,10 +61,13 @@ export function parseBbl(input: unknown): BblParts | null {
   return { borough: bbl.slice(0, 1), block: bbl.slice(1, 6), lot: bbl.slice(6) };
 }
 
-/** Normalize a BIN to 7 digits. Placeholder BINs (1000000 to 5000000, multiples of a million) become null. */
+/**
+ * Normalize a BIN to 7 digits led by a borough digit 1 to 5 (building-linker Requirement 4).
+ * Placeholder BINs (1000000 to 5000000) become null, as do 0000000 and 9999999.
+ */
 export function normalizeBin(input: unknown): string | null {
   const digits = toDigits(input);
-  if (digits === null || digits.length !== 7) return null;
+  if (digits === null || digits.length !== 7 || !/^[1-5]/.test(digits)) return null;
   if (/^[1-5]000000$/.test(digits)) return null;
   return digits;
 }

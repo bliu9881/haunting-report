@@ -5,6 +5,7 @@ import {
   categoryLabel,
   dobJobLabel,
   inWindow,
+  newYorkToday,
   sentenceCase,
   socrataCivilDate,
   stripCitations,
@@ -172,5 +173,12 @@ describe("civil dates (task 2.4)", () => {
     expect(inWindow("2026-11-25", w)).toBe(true);
     expect(inWindow("2023-11-24", w)).toBe(false);
     expect(inWindow(null, w)).toBe(false);
+  });
+});
+
+describe("newYorkToday", () => {
+  it("uses the New York date, not the UTC one", () => {
+    expect(newYorkToday(new Date("2026-11-26T04:00:00Z"))).toBe("2026-11-25");
+    expect(newYorkToday(new Date("2026-11-26T05:00:00Z"))).toBe("2026-11-26");
   });
 });

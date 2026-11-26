@@ -14,8 +14,8 @@
   - [x] 3.5 Evictions: count in the window, most recent date
   - [x] 3.6 DOB: legacy by `bin__` and DOB NOW by `bin`, merged newest 10; `not_applicable` without a BIN. Each permit system is optional: if one fails (the legacy one often times out), the other's permits still show, and the section says which system is missing
 - [x] 4. Cache in `apps/web/lib/cache.ts`: LRU 2,000 entries, 6-hour TTL, key includes the window end, in-flight sharing, failures not cached, injected clock (Requirement 3.3, 3.4)
-- [ ] 5. UI on the building page (Requirements 1 to 3)
-  - [ ] 5.1 Route handler `GET /api/building/[bbl]/[section]` returning the section's JSON; one client component per section that fetches it, with loading, ok, empty, unavailable (retry button, refetches only that section) and not-applicable states
-  - [ ] 5.2 "No housing records" banner when all three HPD sections are empty (Requirement 2.4)
-  - [ ] 5.3 "Data as of" per section from `datasetAsOf`, cached
+- [x] 5. UI on the building page (Requirements 1 to 3)
+  - [x] 5.1 Route handler `GET /api/building/[bbl]/[section]` returning the section's JSON; one client component per section that fetches it, with loading, ok, empty, unavailable (retry button, refetches only that section) and not-applicable states
+  - [x] 5.2 "No housing records" banner when both HPD sections (violations, complaints) are empty (Requirement 2.4)
+  - [x] 5.3 "Data as of" per section from `datasetAsOf`, cached
 - [ ] 6. Checkpoint: tests and typecheck pass; on the live site, building A shows all six sections, building B shows the no-housing-records banner, and a forced source failure shows only that section as unavailable

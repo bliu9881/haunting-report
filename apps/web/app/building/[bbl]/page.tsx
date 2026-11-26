@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { normalizeBbl } from "@haunting/core";
+import { normalizeBbl, normalizeBin } from "@haunting/core";
 import type { NotRankableReason, PublishedRanking, RankingLookup } from "@haunting/store";
 import { civilDate, count, nyDate, ordinal, percentFloor, score, SOURCE_LABELS } from "@/lib/format";
 import { neighborhoodHref } from "@/lib/links";
 import { lookupRanking } from "@/lib/rankings";
+import { Dossier } from "./dossier";
 
 export const dynamic = "force-dynamic";
 
@@ -22,11 +23,12 @@ export default async function BuildingPage({
   searchParams,
 }: {
   params: Promise<{ bbl: string }>;
-  searchParams: Promise<{ address?: string; q?: string }>;
+  searchParams: Promise<{ address?: string; q?: string; bin?: string }>;
 }) {
   const bbl = normalizeBbl((await params).bbl);
   if (bbl === null) notFound();
-  const { address, q } = await searchParams;
+  const { address, q, bin: rawBin } = await searchParams;
+  const bin = rawBin ? normalizeBin(rawBin) : null;
   const ranking = await lookupRanking(bbl);
   const stored = ranking.kind === "error" ? null : ranking.building;
   const title = address ?? stored?.address ?? `Building ${bbl}`;
@@ -37,8 +39,12 @@ export default async function BuildingPage({
         <Link href={q ? `/?q=${encodeURIComponent(q)}` : "/"}>Not this building? Search again</Link>
       </p>
       <h1>{title}</h1>
-      <p className="muted small">BBL {bbl}</p>
+      <p className="muted small">
+        BBL {bbl}
+        {bin ? ` · BIN ${bin}` : ""}
+      </p>
       <RankingSection ranking={ranking} />
+      <Dossier bbl={bbl} bin={bin} />
     </>
   );
 }

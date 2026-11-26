@@ -5,3 +5,4 @@ export * from "./street";
 export * from "./ranking";
 export * from "./http";
 export * from "./socrata";
+export * from "./dossier";

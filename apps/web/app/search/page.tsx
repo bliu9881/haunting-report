@@ -17,7 +17,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
   if (q === "") redirect("/");
 
   const r = await resolveAddress(q, { fetch });
-  if (r.kind === "match") redirect(buildingHref(r.building.bbl, r.building.label, q));
+  if (r.kind === "match") redirect(buildingHref(r.building.bbl, r.building.label, q, r.building.bin));
 
   return (
     <>
@@ -31,7 +31,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
           <ul className="candidates">
             {r.candidates.map((c) => (
               <li key={`${c.bbl}-${c.bin ?? ""}`}>
-                <Link href={buildingHref(c.bbl, c.label, q)}>{c.label}</Link>
+                <Link href={buildingHref(c.bbl, c.label, q, c.bin)}>{c.label}</Link>
               </li>
             ))}
           </ul>

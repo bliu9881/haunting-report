@@ -232,6 +232,8 @@ export interface Permit {
 export interface Permits {
   recent: Permit[];
   total: number;
+  /** "building" when looked up by BIN; "lot" (every building on the tax lot) when there was no BIN. */
+  scope: "building" | "lot";
   /** Which permit system didn't answer. The legacy dataset often times out (docs/data-sources.md). */
   unavailable: ("DOB" | "DOB NOW")[];
 }
@@ -240,28 +242,30 @@ export const RECENT_PERMITS = 10;
 
 export const permitsAdapter: Adapter<"permits", Permits> = {
   source: "permits",
-  queries: (b): DossierQuery[] | { notApplicable: string } => {
-    if (b.bin === null) return { notApplicable: "no_bin" };
+  queries: (b): DossierQuery[] => {
+    // By building when the BIN is known; otherwise by tax lot (Requirement 2.3).
+    const legacyWhere = b.bin === null ? byBbl(b.bbl) : `bin__ = ${soqlString(b.bin)}`;
+    const nowWhere = b.bin === null ? byBbl(b.bbl) : `bin = ${soqlString(b.bin)}`;
     return [
       {
         dataset: "ipu4-2q9a",
         optional: true,
         // issuance_date is text "MM/DD/YYYY", so it can't be sorted in SoQL; fetch and sort here.
-        params: { $select: "job__, job_type, work_type, permit_status, issuance_date, filing_date", $where: `bin__ = ${soqlString(b.bin)}`, $limit: "500" },
+        params: { $select: "job__, job_type, work_type, permit_status, issuance_date, filing_date", $where: legacyWhere, $limit: "500" },
       },
       {
         dataset: "w9ak-ipjd",
         optional: true,
         params: {
           $select: "job_filing_number, job_type, filing_status, filing_date, first_permit_date",
-          $where: `bin = ${soqlString(b.bin)}`,
+          $where: nowWhere,
           $order: "filing_date DESC",
           $limit: "200",
         },
       },
     ];
   },
-  parse: ([legacy, dobNow]) => {
+  parse: ([legacy, dobNow], b) => {
     const items: Permit[] = [
       ...rows(legacy).map((r) => ({
         system: "DOB" as const,
@@ -282,7 +286,10 @@ export const permitsAdapter: Adapter<"permits", Permits> = {
     const unavailable: Permits["unavailable"] = [];
     if (legacy === null) unavailable.push("DOB");
     if (dobNow === null) unavailable.push("DOB NOW");
-    return { data: { recent: items.slice(0, RECENT_PERMITS), total: items.length, unavailable }, rowCount: items.length };
+    return {
+      data: { recent: items.slice(0, RECENT_PERMITS), total: items.length, scope: b.bin === null ? "lot" : "building", unavailable },
+      rowCount: items.length,
+    };
   },
 };
 

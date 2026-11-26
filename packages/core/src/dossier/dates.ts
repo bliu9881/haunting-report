@@ -34,3 +34,8 @@ export function usSlashDate(x: unknown): string | null {
 export function inWindow(date: string | null, w: { start: string; end: string }): boolean {
   return date !== null && date >= w.start && date <= w.end;
 }
+
+/** Today's civil date in New York, `YYYY-MM-DD`, for the 36-month window (data-conventions: never via UTC). */
+export function newYorkToday(now: Date = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(now);
+}
