@@ -10,4 +10,4 @@
   - "121 open hazardous violations": the facts carried a total across classes A to I. The total was removed, so a model-made total now fails the number check; the prompt names each class exactly.
   - "an example problem of properly repair...": violation texts are orders to the landlord, so the key is now `inspectorOrderedTheLandlordTo` and the prompt asks for "one recent order was to ...".
   - Round 3 (building A): ranking, 23 class C and 84 class B open with one order, the top complaint problem (heat/hot water, 40) and 2 open now, 1 eviction. Building B: "not ranked because rankings only cover residential buildings with 3 or more apartments", zero counts stated plainly, no "safe" wording
-- [ ] 8. Deploy: owner updates `GEMINI_API_KEY` in Hostinger (and optionally `GEMINI_MODEL`); verify on the live site
+- [ ] 8. Deploy: owner updates `GEMINI_API_KEY` in Hostinger (and optionally `GEMINI_MODEL`); verify on the live site. Note 2026-11-26: the live site already returned a good summary with the server's older key, so that project has begun serving requests too; Hostinger should still get the newer key, which is the one tested locally
