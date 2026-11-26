@@ -1,0 +1,21 @@
+# Tasks: Building Dossier
+
+- [ ] 1. Streaming check on Hostinger (design risk). A temporary page streams one part at once and one after 4 s; measure on the live site whether the first part arrives before the second. Decide: per-section `<Suspense>` streaming, or client-fetched sections. Remove the page afterwards
+- [ ] 2. Shared pieces in `packages/core/src/dossier/`
+  - [ ] 2.1 Section result type: `ok` (data, row count) or `SourceError<source>`; `empty` is decided by the UI from the data
+  - [ ] 2.2 Word lookups: building class, DOB job type, HPD complaint category. Example tests
+  - [ ] 2.3 `stripCitations(novdescription)`. Examples from real values; property: never empty for non-empty input
+  - [ ] 2.4 Civil-date parsing for Socrata timestamps and DOB `MM/DD/YYYY`. Properties: round trip, invalid input gives null
+- [ ] 3. Adapters, one per source, each with recorded fixtures for building A, example tests and properties (parsers never throw, counts are non-negative integers, nothing outside `$select` is shown) (Requirements 1, 4, 5)
+  - [ ] 3.1 PLUTO building facts
+  - [ ] 3.2 HPD violations: open counts by class, 20 most recent open
+  - [ ] 3.3 HPD complaints: by category in the window, open count
+  - [ ] 3.4 311: top 10 types in the window
+  - [ ] 3.5 Evictions: count in the window, most recent date
+  - [ ] 3.6 DOB: legacy by `bin__` and DOB NOW by `bin`, merged newest 10; `not_applicable` without a BIN
+- [ ] 4. Cache in `apps/web/lib/cache.ts`: LRU 2,000 entries, 6-hour TTL, key includes the window end, in-flight sharing, failures not cached, injected clock (Requirement 3.3, 3.4)
+- [ ] 5. UI on the building page (Requirements 1 to 3)
+  - [ ] 5.1 One section component per source, each in its own boundary chosen in task 1, with loading, ok, empty, unavailable (retry) and not-applicable states
+  - [ ] 5.2 "No housing records" banner when all three HPD sections are empty (Requirement 2.4)
+  - [ ] 5.3 "Data as of" per section from `datasetAsOf`, cached
+- [ ] 6. Checkpoint: tests and typecheck pass; on the live site, building A shows all six sections, building B shows the no-housing-records banner, and a forced source failure shows only that section as unavailable

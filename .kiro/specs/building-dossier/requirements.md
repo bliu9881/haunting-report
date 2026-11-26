@@ -2,7 +2,7 @@
 
 The live part of a building report: what the city's records say about this one building, fetched per request, one section per dataset. It sits below the address and the neighborhood ranking, which come from MySQL (spec: neighborhood-rankings).
 
-Status: draft. Decisions D1 to D4 need the owner's sign-off.
+Status: approved 2026-11-26. D1 to D4 were accepted as recommended.
 
 ## Glossary
 - **Building**: the `match` (or the candidate the user picked) from the building-linker, identified by BBL and, when known, BIN.
@@ -13,7 +13,7 @@ Status: draft. Decisions D1 to D4 need the owner's sign-off.
 ## Requirement 1: Sections and what they show
 **User story:** As a renter, I want the building's housing record in plain terms, so I can judge it before I sign a lease.
 
-**D1, sections (recommended):**
+**D1, sections (approved):**
 
 | Section | Source | Shows |
 |---|---|---|
@@ -46,7 +46,7 @@ Acceptance criteria:
 Acceptance criteria:
 1. THE address, the ranking and the section frames SHALL render without waiting for any Socrata source.
 2. Each source SHALL load independently, with its own timeout of `DOSSIER_SOURCE_TIMEOUT_MS` (8 s) and at most one retry after a network error or 5xx (building-linker Requirement 5). A slow or failing source SHALL affect only its own section.
-3. **D2, caching (recommended): in memory.** A source's successful result for a building SHALL be cached for 6 hours, in at most 2,000 entries (least recently used goes first). Failures SHALL NOT be cached. The cache resets on deploy or restart.
+3. **D2, caching (approved): in memory.** A source's successful result for a building SHALL be cached for 6 hours, in at most 2,000 entries (least recently used goes first). Failures SHALL NOT be cached. The cache resets on deploy or restart.
    - Alternative: cache in MySQL, so results survive deploys. That costs a new table and a write per lookup. Add it only if demo visits still hit cold Socrata queries.
 4. Two requests for the same building and source at the same time SHALL share one Socrata call.
 5. Every source call SHALL send `SOCRATA_APP_TOKEN` when it is set.
@@ -54,7 +54,7 @@ Acceptance criteria:
 ## Requirement 4: Privacy
 **User story:** As the publisher, I don't want the report to single out people.
 
-**D3, what is never shown (recommended):** owner names (PLUTO, DOB), marshal names, eviction apartment numbers and docket numbers, permittee, applicant and filing-representative names and phone numbers, and complainant details.
+**D3, what is never shown (approved):** owner names (PLUTO, DOB), marshal names, eviction apartment numbers and docket numbers, permittee, applicant and filing-representative names and phone numbers, and complainant details.
 
 Acceptance criteria:
 1. THE adapters SHALL NOT request the columns above (`$select` lists only what is shown), so they can't leak through a later UI change.
@@ -64,7 +64,7 @@ Acceptance criteria:
 Acceptance criteria:
 1. HPD violations, HPD complaints, 311, evictions and PLUTO SHALL be queried by BBL; DOB legacy by `bin__`, DOB NOW by `bin`.
 2. Every identifier placed in a query SHALL be normalized (`normalizeBbl`, `normalizeBin`) and quoted with `soqlString`.
-3. **D4, multi-building lots (recommended): show the BBL's records and say so.** A tax lot can hold several buildings with different BINs, and geosearch gives one. HPD and 311 records follow the lot (BBL), while DOB records follow the building (BIN). The construction section SHALL state that it covers this building only.
+3. **D4, multi-building lots (approved): show the BBL's records and say so.** A tax lot can hold several buildings with different BINs, and geosearch gives one. HPD and 311 records follow the lot (BBL), while DOB records follow the building (BIN). The construction section SHALL state that it covers this building only.
 
 ## Out of scope
 - The AI summary (its own spec, built on these sections).

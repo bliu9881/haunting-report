@@ -1,6 +1,6 @@
-# Design: Building Dossier (draft)
+# Design: Building Dossier
 
-Assumes the recommended options in requirements.md (D1 sections, D2 in-memory cache, D3 privacy list, D4 BBL records with a note).
+Implements the approved decisions in requirements.md (D1 sections, D2 in-memory cache, D3 privacy list, D4 BBL records with a note).
 
 ## Shape
 ```
