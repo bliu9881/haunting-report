@@ -84,12 +84,29 @@ export function Dossier({ bbl, bin }: { bbl: string; bin: string | null }) {
   );
 }
 
+const LABEL_SOURCES: Record<Source, string> = {
+  pluto: "PLUTO",
+  violations: "HPD",
+  complaints: "HPD",
+  service_requests: "311",
+  evictions: "DOI",
+  permits: "DOB",
+};
+
 function Section({ source, state, onRetry, bin }: { source: Source; state: State; onRetry: () => void; bin: string | null }) {
+  const n = ORDER.indexOf(source) + 1;
   return (
     <section className="panel" aria-busy={state.status === "loading"}>
-      <h2>{TITLES[source]}</h2>
+      <div className="panel-head">
+        <h2>{TITLES[source]}</h2>
+        <span className="label">
+          Case file {n} of {ORDER.length} · {LABEL_SOURCES[source]}
+        </span>
+      </div>
       {state.status === "loading" ? (
-        <p className="muted">Asking the city&apos;s records…</p>
+        <p className="summoning">
+          <span className="candle" aria-hidden /> Summoning the city&apos;s records…
+        </p>
       ) : state.payload.kind === "error" ? (
         <p className="muted">
           This section is unavailable right now (the city&apos;s dataset didn&apos;t answer).{" "}
@@ -127,7 +144,7 @@ function Body({ source, payload, bin }: { source: Source; payload: Ok; bin: stri
           <Fact value={d.yearBuilt ?? "Unknown"} label="Year built" />
           <Fact value={d.floors ?? "Unknown"} label="Floors" />
           <Fact value={d.unitsRes === null ? "Unknown" : count(d.unitsRes)} label="Apartments" />
-          <Fact value={d.buildingClassLabel ?? d.buildingClass ?? "Unknown"} label={`Building class${d.buildingClass ? ` (${d.buildingClass})` : ""}`} />
+          <Fact value={d.buildingClassLabel ?? d.buildingClass ?? "Unknown"} label={`Building class${d.buildingClass ? ` (${d.buildingClass})` : ""}`} text />
         </div>
       );
     }
@@ -254,9 +271,9 @@ function Empty({ children }: { children: React.ReactNode }) {
   return <p className="muted">{children}</p>;
 }
 
-function Fact({ value, label, tone }: { value: React.ReactNode; label: string; tone?: "c" }) {
+function Fact({ value, label, tone, text }: { value: React.ReactNode; label: string; tone?: "c"; text?: boolean }) {
   return (
-    <div className={`fact${tone ? ` ${tone}` : ""}`}>
+    <div className={`fact${tone ? ` ${tone}` : ""}${text ? " text" : ""}`}>
       <b>{value}</b>
       <span>{label}</span>
     </div>

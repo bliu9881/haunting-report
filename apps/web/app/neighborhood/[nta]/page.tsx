@@ -48,7 +48,7 @@ export default async function NeighborhoodPage({ params }: { params: Promise<{ n
             </thead>
             <tbody>
               {top.map((b) => (
-                <tr key={b.bbl}>
+                <tr key={b.bbl} className={b.rank !== null && b.rank <= 3 ? "top" : undefined}>
                   <td className="num">{b.rank}</td>
                   <td>
                     <Link href={buildingHref(b.bbl, b.address)}>{b.address}</Link>

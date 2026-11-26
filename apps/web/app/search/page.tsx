@@ -24,7 +24,7 @@ export default async function Search({ searchParams }: { searchParams: Promise<{
       <p className="small">
         <Link href={`/?q=${encodeURIComponent(q)}`}>← Change search</Link>
       </p>
-      <h1>&ldquo;{q}&rdquo;</h1>
+      <h1 className="address">&ldquo;{q}&rdquo;</h1>
       {r.kind === "ambiguous" && (
         <>
           <p className="muted">{PROMPTS[r.reason]}</p>

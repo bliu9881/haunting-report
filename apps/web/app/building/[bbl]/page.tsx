@@ -5,6 +5,7 @@ import type { NotRankableReason, PublishedRanking, RankingLookup } from "@haunti
 import { civilDate, count, nyDate, ordinal, percentFloor, score, SOURCE_LABELS } from "@/lib/format";
 import { neighborhoodHref } from "@/lib/links";
 import { lookupRanking } from "@/lib/rankings";
+import { HauntMeter } from "../../components/haunt-meter";
 import { Dossier } from "./dossier";
 
 export const dynamic = "force-dynamic";
@@ -38,7 +39,7 @@ export default async function BuildingPage({
       <p className="small">
         <Link href={q ? `/?q=${encodeURIComponent(q)}` : "/"}>Not this building? Search again</Link>
       </p>
-      <h1>{title}</h1>
+      <h1 className="address">{title}</h1>
       <p className="muted small">
         BBL {bbl}
         {bin ? ` · BIN ${bin}` : ""}
@@ -71,11 +72,15 @@ function RankingSection({ ranking }: { ranking: RankingLookup }) {
   const b = ranking.building;
   return (
     <section className="panel">
-      <h2>Neighborhood ranking</h2>
+      <div className="panel-head">
+        <h2>Neighborhood ranking</h2>
+        <span className="label">Case summary</span>
+      </div>
       <div className="big">
         {ordinal(b.rank)} most haunted <span className="of">of {count(b.neighborhoodCount)} buildings in </span>
         <Link href={neighborhoodHref(b.ntaCode)}>{b.ntaName}</Link>
       </div>
+      <HauntMeter moreHauntedThan={b.moreHauntedThan} score={b.score} />
       <p>
         More haunted than {percentFloor(b.moreHauntedThan)} of its neighbors. Score {score(b.score)}
         {ranking.neighborhoodMedian !== null && <> against a neighborhood median of {score(ranking.neighborhoodMedian)}</>}.
@@ -94,32 +99,31 @@ function RankingSection({ ranking }: { ranking: RankingLookup }) {
 /** Counts over the ranking window, open or closed. The live violations section below shows only open ones. */
 function Counts({ b }: { b: { violations: { a: number; b: number; c: number }; complaints: number; evictions: number; unitsRes: number } }) {
   return (
-    <div className="facts">
-      <div className="fact c">
-        <b>{count(b.violations.c)}</b>
-        <span>Class C violations, 36 months</span>
+    <>
+      <p className="label counts-caption">Last 36 months, open and closed</p>
+      <div className="facts facts-5">
+        <div className="fact c">
+          <b>{count(b.violations.c)}</b>
+          <span>Class C violations</span>
+        </div>
+        <div className="fact">
+          <b>{count(b.violations.b)}</b>
+          <span>Class B violations</span>
+        </div>
+        <div className="fact">
+          <b>{count(b.violations.a)}</b>
+          <span>Class A violations</span>
+        </div>
+        <div className="fact">
+          <b>{count(b.complaints)}</b>
+          <span>HPD complaints</span>
+        </div>
+        <div className="fact">
+          <b>{count(b.evictions)}</b>
+          <span>Evictions</span>
+        </div>
       </div>
-      <div className="fact">
-        <b>{count(b.violations.b)}</b>
-        <span>Class B violations, 36 months</span>
-      </div>
-      <div className="fact">
-        <b>{count(b.violations.a)}</b>
-        <span>Class A violations, 36 months</span>
-      </div>
-      <div className="fact">
-        <b>{count(b.complaints)}</b>
-        <span>HPD complaints, 36 months</span>
-      </div>
-      <div className="fact">
-        <b>{count(b.evictions)}</b>
-        <span>Evictions, 36 months</span>
-      </div>
-      <div className="fact">
-        <b>{count(b.unitsRes)}</b>
-        <span>Apartments</span>
-      </div>
-    </div>
+    </>
   );
 }
 
