@@ -6,6 +6,8 @@ Built with [Kiro](https://kiro.dev) for Kiroween 2026, Frankenstein category. NY
 
 > Records can lag or be incomplete. This is not legal advice or a safety guarantee.
 
+The Kiroween write-up, including how Kiro was used, is in [docs/SUBMISSION.md](docs/SUBMISSION.md).
+
 ## What it does
 - **Address search.** Resolves free text to one building with NYC's geosearch service. When an address is ambiguous (no house number, no borough, a street that doesn't match), it asks the user to choose instead of guessing.
 - **Neighborhood ranking.** Every residential building with 3 or more apartments (about 172,000) is scored and ranked within its 2020 Neighborhood Tabulation Area. Score = (3 × class C + 2 × class B + 1 × class A) HPD violations over 36 months, divided by apartments.
